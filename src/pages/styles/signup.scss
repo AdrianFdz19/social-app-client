@@ -1,0 +1,61 @@
+@import '../../styles.scss';
+
+.sign-up-cont {
+    @include cont;
+    min-height: 100vh;
+    .sg-up-box {
+        border: 1px solid gainsboro;
+        width: 45%;
+        min-width: 25rem;
+        @include cont;
+        box-sizing: border-box;
+        form {  
+            @include column;
+            width: 90%;
+            h3 {
+                display: flex;
+                justify-content: flex-start;
+            }
+            .question {
+                display: flex;
+                align-items: center;
+                p {
+
+                }
+                label {
+                    margin-left: 1rem;
+                    cursor: pointer;
+                }
+            }
+            input {
+                width: 100%;
+                height: 2rem;
+                box-sizing: border-box;
+            }
+            .pw-box {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                input {
+                    width: 100%;
+                }
+                button {
+                    @include cont;
+                    position: absolute;
+                    right: .75rem;
+                    border: none;
+                    background-color: transparent;
+                    width: 1.75rem;
+                    height: auto;
+                    .icon {
+                        cursor: pointer;
+                        width: 100%;
+                        height: auto;
+                    }
+                }
+                
+            }
+        }
+    }
+}

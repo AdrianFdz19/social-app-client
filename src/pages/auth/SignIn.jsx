@@ -4,15 +4,13 @@ import icons from '../../assets/icons';
 import { useAppContext } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 
-export default function SignUp() {
+export default function SignIn() {
     const redirect = useNavigate();
     const { serverUrl } = useAppContext();
     const [isSubmitActive, setSubmitStatus] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
-        email: "",
         password: "",
-        repeatPW: ""
     });
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState([]);
@@ -29,22 +27,17 @@ export default function SignUp() {
     };
 
     useEffect(() => {
-        const { username, email, password, repeatPW } = formData;
-        setSubmitStatus(username && email && password && repeatPW);
+        const { username, password } = formData;
+        setSubmitStatus(username && password);
     }, [formData]);
 
     const handleSubmitSignUp = async (e) => {
         e.preventDefault();
         setErrorMsg([]);
-        
-        if (formData.password !== formData.repeatPW) {
-            setErrorMsg(["Passwords do not match"]);
-            return;
-        }
 
         try {
             setLoading(true);
-            const response = await fetch(`${serverUrl}/auth/sign-up`, {
+            const response = await fetch(`${serverUrl}/auth/sign-in`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -80,23 +73,16 @@ export default function SignUp() {
         <div className="sign-up-cont">
             <div className="sg-up-box">
                 <form onSubmit={handleSubmitSignUp}>
-                    <h3>Sign Up</h3>
+                    <h3>Sign In</h3>
                     <div className="question">
-                        <p>Already have an account?</p>
-                        <label onClick={()=>redirect(`/sign-in`)} >Sign In</label>
+                        <p>Dont have an account?</p>
+                        <label onClick={()=>redirect(`/sign-up`)} >Sign Up</label>
                     </div>
                     <input 
                         type="text" 
-                        placeholder='Username'
+                        placeholder='Email or username'
                         value={formData.username}
                         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                        required
-                    />
-                    <input 
-                        type="email" 
-                        placeholder='Email'
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
                     />
                     <div className="pw-box">
@@ -115,22 +101,6 @@ export default function SignUp() {
                             {isPasswordHidden.password ? <icons.show className='icon' /> : <icons.hide className='icon' />}
                         </button>
                     </div>
-                    <div className="pw-box">
-                        <input
-                            type={isPasswordHidden.repeatedPW ? 'password' : 'text'}
-                            placeholder='Repeat password'
-                            value={formData.repeatPW}
-                            onChange={(e) => setFormData({ ...formData, repeatPW: e.target.value })}
-                            required
-                        />
-                        <button
-                            type="button"
-                            className='icon'
-                            onClick={() => togglePasswordVisibility('repeatedPW')}
-                        >
-                            {isPasswordHidden.repeatedPW ? <icons.show className='icon' /> : <icons.hide className='icon' />}
-                        </button>
-                    </div>
 
                     {errorMsg.length > 0 && (
                         <div className="err-msg-box">
@@ -145,7 +115,7 @@ export default function SignUp() {
                         id='submit'
                         disabled={!isSubmitActive || loading}
                     >
-                        {loading ? 'Submitting...' : 'Sign Up'}
+                        {loading ? 'Submitting...' : 'Sign In'}
                     </button>
                 </form>
             </div>

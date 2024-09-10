@@ -8,4 +8,5 @@ html, body {
 
 .App {
   min-height: 100vh;
+  margin-top: 3rem;
 }

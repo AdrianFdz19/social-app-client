@@ -1,0 +1,33 @@
+@import '../.././styles.scss';
+
+.profile-pic-cont {
+    @include cont;
+    border-radius: 100px;
+    overflow: hidden;
+    cursor: pointer;
+  
+    &.outline {
+      border: 4px solid #fff;
+    }
+  
+    .profile-pic-box {
+      @include cont;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      
+      img {
+        width: 100%;
+        height: 100%; // Hacemos que ocupe todo el contenedor.
+        object-fit: cover; // Ajustamos para que mantenga sus proporciones y cubra todo el contenedor.
+        object-position: center; // Centra la imagen en caso de que se corte.
+      }
+  
+      #icon {
+        width: 100%;
+        height: auto;
+        background-color: gainsboro;
+        color: #474747;
+      }
+    }
+}

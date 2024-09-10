@@ -1,0 +1,9 @@
+@import '../../../styles.scss';
+
+.home-cont {
+    @include cont;
+    .home-box {
+        border: 1px solid red;
+        width: 90%;
+    }
+}

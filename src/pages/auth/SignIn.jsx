@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/signup.scss';
 import icons from '../../assets/icons';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppProvider';
 import { useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
     const redirect = useNavigate();
-    const { serverUrl } = useAppContext();
+    const { serverUrl, setUser } = useAppContext();
     const [isSubmitActive, setSubmitStatus] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
@@ -48,8 +48,30 @@ export default function SignIn() {
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data);
+                /* console.log(data); */
+                const authToken = data.authToken;
+                if (authToken) {
+                    localStorage.setItem('authToken', authToken);
+                    const payload = JSON.parse(atob(authToken.split('.')[1]));
+                    if (payload) {
+                        setUser({
+                            id: payload.user_id,
+                            username: payload.username,
+                            email: payload.email,
+                            imgs: {
+                                profilePic: payload.profile_pic,
+                                bannerImg: payload.banner_img
+                            },
+                            isAuthenticated: payload.is_authenticated
+                        });
+                    } else {
+                        console.error('Error retrieving auth token');
+                    }
+                } else {
+                    console.error('No auth token received');
+                }
                 // Maneja la redirección o el siguiente paso después del registro exitoso
+                redirect(`/`);
             } else {
                 const isArray = data.isArray;
                 if(isArray) {

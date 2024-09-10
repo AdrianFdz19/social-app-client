@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/signup.scss';
 import icons from '../../assets/icons';
-import { useAppContext } from '../../context/AppContext';
+import { useAppContext } from '../../context/AppProvider';
 import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
@@ -55,8 +55,9 @@ export default function SignUp() {
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data);
+                /* console.log(data); */
                 // Maneja la redirección o el siguiente paso después del registro exitoso
+                redirect(`/sign-in`);
             } else {
                 const isArray = data.isArray;
                 if(isArray) {

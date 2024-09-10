@@ -3,6 +3,10 @@ import './App.css'
 import {Route, Routes} from 'react-router-dom'
 import SignUp from './pages/auth/SignUp'
 import SignIn from './pages/auth/SignIn'
+import NestedRoute from './components/NestedRoute'
+import LayerWithHeader from './components/LayerWithHeader'
+import Home from './pages/home/Home'
+import Profile from './pages/profile/Profile'
 
 function App() {
 
@@ -10,6 +14,18 @@ function App() {
     <>
       <div className="App">
         <Routes>
+
+          <Route element={<NestedRoute />} >
+
+            <Route path='/' element={<LayerWithHeader />} >
+
+              <Route index element={<Home />} ></Route>
+
+              <Route path='/profile/' element={<Profile />} ></Route>
+
+            </Route>
+
+          </Route>
 
           <Route path='/sign-up' element={<SignUp />} ></Route>
 

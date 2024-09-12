@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import '../styles/signup.scss';
 import icons from '../../assets/icons';
 import { useAppContext } from '../../context/AppProvider';
-import { useNavigate } from 'react-router-dom';
 
 export default function SignIn() {
-    const redirect = useNavigate();
-    const { serverUrl, setUser } = useAppContext();
+    const { serverUrl, setUser, redirect } = useAppContext();
     const [isSubmitActive, setSubmitStatus] = useState(false);
     const [formData, setFormData] = useState({
         username: "",

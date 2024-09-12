@@ -3,9 +3,8 @@
 .profile-pic-cont {
     @include cont;
     border-radius: 100px;
-    overflow: hidden;
     cursor: pointer;
-  
+    position: relative;
     &.outline {
       border: 4px solid #fff;
     }
@@ -15,7 +14,8 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      
+      border-radius: 100px;
+      position: relative;
       img {
         width: 100%;
         height: 100%; // Hacemos que ocupe todo el contenedor.
@@ -29,5 +29,16 @@
         background-color: gainsboro;
         color: #474747;
       }
+    }
+
+    .online-mark {
+      width: .65rem;
+      height: .65rem;
+      background-color: #59ff0c;
+      border-radius: 100%;
+      position: absolute;
+      border: 1.5px solid #fff;
+      bottom: 0;
+      right: 0;
     }
 }

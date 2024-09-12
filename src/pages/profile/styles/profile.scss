@@ -34,10 +34,27 @@
                 .box {
                     border: 1px solid gainsboro;
                     width: 85%;
+                    @include between;
                     #username {
                         font-weight: 500;
                         font-size: 1.1rem;
                     }
+                    .btns {
+                        @include between;
+                    }
+                }
+            }
+        }
+        .profile-body {
+            margin-top: 1.5rem;
+            @include cont;
+            .profile-feed {
+                @include cont;
+                width: 45%;
+                min-width: 30rem;
+                .feed-box {
+                    width: 100%;
+                    @include column;
                 }
             }
         }
@@ -62,9 +79,13 @@
                     .box {
                         border: 1px solid gainsboro;
                         width: 70%;
+                        @include between;
                         #username {
                             font-weight: 500;
                             font-size: 1.1rem;
+                        }
+                        .btns {
+                            @include between;
                         }
                     }
                 }

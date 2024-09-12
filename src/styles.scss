@@ -11,3 +11,17 @@
     display: flex;
     justify-content: space-between;
 }
+@mixin overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    @include cont;
+    background-color: #00000041;
+    z-index: 110;
+}
+@mixin buttonColor {
+    background-image: linear-gradient(to bottom, #003dd8, #7c00f8);
+    color: #fff;
+}

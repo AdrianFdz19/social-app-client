@@ -1,0 +1,61 @@
+@import '../../../styles.scss';
+
+.c-post-cont {
+    border: 1px solid gainsboro;
+    padding: .7rem;
+    box-sizing: border-box;
+    margin-bottom: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    .c-post-box {
+        @include between;
+        align-items: center;
+        p {
+            width: 85%;
+            background-color: rgb(236, 236, 236);
+            padding-left: 1rem;
+            box-sizing: border-box;
+            border-radius: 10px;
+            height: 2rem;
+            display: flex;
+            text-align: left;
+            align-items: center;
+            margin: 0;
+        }
+    }
+}
+
+.modal-box {
+    width: 45%;
+    min-width: 30rem;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: .7rem;
+    box-sizing: border-box;
+    form {
+        @include column;
+        position: relative;
+        #close {
+            position: absolute;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+        }
+        h3 {
+            text-align: center;
+            margin: 0;
+            margin-bottom: .7rem;
+        }
+        textarea {
+            height: 7rem;
+            margin-bottom: .7rem;
+            border-radius: 10px;
+            border: 1px solid gainsboro;
+        }
+        input {
+            height: 2rem;
+            border-radius: 10px;
+            border: none;
+        }
+    }
+}

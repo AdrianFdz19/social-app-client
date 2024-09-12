@@ -1,0 +1,41 @@
+@import '../../styles.scss';
+
+.follow-btn-cont {
+    border-radius: 10px;
+    cursor: pointer;
+    @include cont;
+    width: auto;
+    .f-btn-box {
+        @include cont;
+        padding: .3rem .65rem;
+        border-radius: 10px;
+        transition: all .3s ease;
+        p {
+            margin: 0;
+            font-weight: 500;
+        }
+        .icon {
+            margin: 0;
+        }
+
+        &.follow {
+            @include buttonColor;
+            &:hover {
+                #plus {
+                    transform: scale(1.4);
+                }
+            }
+            #plus {
+                transition: all .15s ease;
+            }
+        }
+        &.unfollow {
+            background-image: linear-gradient(to bottom, #202020, #4f4f4f);
+            color: #fff;
+            &.unfollow-hover {
+                background-image: linear-gradient(to bottom, #202020, #4f4f4f);
+                color: #ff3434;
+            }
+        }
+    }
+}

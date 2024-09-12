@@ -1,10 +1,12 @@
 @import '../../../styles.scss';
 
-.home-cont {
+.feed-cont {
+    margin-top: 1.25rem;
     @include cont;
-    .home-box {
+    width: 45%;
+    min-width: 30rem;
+    .feed-box {
         width: 100%;
         @include column;
-        align-items: center;
     }
 }

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 const AppContext = createContext();
 export const useAppContext = () => {
     return useContext(AppContext);
@@ -18,6 +19,9 @@ export default function AppProvider({children}) {
       },
       isAuthenticated: false,
     });
+
+    const navigate = useNavigate();
+    const redirect = (route) => navigate(route);
 
     useEffect(() => {
       const getAuthToken = async() => {
@@ -58,6 +62,7 @@ export default function AppProvider({children}) {
         serverUrl: isDevServer ? "http://localhost:3000" : "",
         user, setUser,
         tokenLoading,
+        redirect,
     };
 
   return (

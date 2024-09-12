@@ -7,33 +7,17 @@ import { useAppContext } from '../../context/AppProvider';
 export default function Feed() {
 
   const {serverUrl, user} = useAppContext();
-  
-  /* {
-    id: 1,
-    author_id: 8,
-    author_name: 'adrianfdz',
-    author_pic: 'https://firebasestorage.googleapis.com/v0/b/social-app-base.appspot.com/o/profile_pictures%2F1aa56704-7d04-43d1-af1e-434aa2e1da02?alt=media&token=4a97eea6-4241-47d9-b067-40a267d2b7bf',
-    is_author_online: true,
-    content: 'This is the content',
-    created_at: '2 days ago',
-    updated_at: ...,
-    likes: 0,
-    is_following: false
-  }, */
 
   const [posts, setPosts] = useState([]);
-  const [feedLastFollowAction, setFeedLastFollowAction] = useState({
-    targetId: null,
-    follow: null
-  });
 
+  //Obtener la lista de posts
   useEffect(() => {
     const getPosts = async () => {
       try {
         const postsResponse = await fetch(`${serverUrl}/posts/current_user/${user.id}`);
         if(postsResponse.ok) {
           const data = await postsResponse.json();
-          setPosts(prev => ([...prev, ...data]));
+          setPosts(data);
         } else {
           console.error('Server internal error');
         }
@@ -44,22 +28,27 @@ export default function Feed() {
     getPosts();
   }, [serverUrl, user]);
 
+  const [lastFollowActionContext, setLastFollowActionContext] = useState({
+    targetId: null,
+    followStatus: null
+  });
+
+  //Cuando se detecte un cambio en lasFollowActionContext proveniente de un follow btn hijo
   useEffect(() => {
-    const { targetId, follow } = feedLastFollowAction;
-  
+    const {targetId, followStatus} = lastFollowActionContext;
+
     if (targetId) {
-  
+      console.log(lastFollowActionContext);
       // Actualizar los posts con el author_id correspondiente al targetId
       setPosts(prevPosts => 
         prevPosts.map(post => 
           post.author_id == targetId
-            ? { ...post, is_following: follow } // Actualizar la propiedad is_following
+            ? { ...post, is_following: followStatus } // Actualizar la propiedad is_following
             : post // Mantener el post igual si no coincide el author_id
         )
       );
     }
-  
-  }, [feedLastFollowAction]);
+  }, [lastFollowActionContext]);
 
   return (
     <div className="feed-cont">
@@ -81,7 +70,9 @@ export default function Feed() {
                   likes={post.likes}
                   isFollowing={post.is_following}
                   serverUrl={serverUrl}
-                  setFeedLastFollowAction={setFeedLastFollowAction}
+                  setLastFollowActionContext={setLastFollowActionContext}
+                  /* hasLiked={post.has_liked} */
+                  hasLiked={true}
                 />
               ))
             }

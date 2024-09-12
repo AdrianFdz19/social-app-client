@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAppContext } from '../../context/AppProvider';
 import FollowBtn from '../FollowBtn.jsx';
 import { formatDistanceToNow } from 'date-fns';
+import PostActions from './PostActions.jsx';
 
-export default function Post({userId, id, authorId, authorName, authorPic, isAuthorOnline, content, createdAt, updatedAt, likes, isFollowing, serverUrl, setFeedLastFollowAction}) {
+export default function Post({userId, id, authorId, authorName, authorPic, isAuthorOnline, content, createdAt, updatedAt, likes, isFollowing, serverUrl, setLastFollowActionContext, hasLiked}) {
 
     const {redirect} = useAppContext();
 
@@ -39,7 +40,7 @@ export default function Post({userId, id, authorId, authorName, authorPic, isAut
                                 serverUrl={serverUrl}
                                 userId={userId}
                                 targetId={authorId}
-                                setFeedLastFollowAction={setFeedLastFollowAction}
+                                setLastFollowActionContext={setLastFollowActionContext}
                             />
                         }
                     </div>
@@ -59,26 +60,11 @@ export default function Post({userId, id, authorId, authorName, authorPic, isAut
                 </div>
             </div>
 
-            <div className="actions">
-                <div className="box">
-                    <div className="button">
-                        <icons.like className='icon' />
-                        <p>like</p>
-                    </div>
-                    <div className="button">
-                        <icons.comment className='icon' />
-                        <p>comment</p>
-                    </div>
-                    <div className="button">
-                        <icons.share className='icon' />
-                        <p>share</p>
-                    </div>
-                    <div className="button">
-                        <icons.save className='icon' />
-                        <p>save</p>
-                    </div>
-                </div>
-            </div>
+            <PostActions
+                hasLiked={hasLiked}
+                serverUrl={serverUrl}
+                postId={id}
+            />
 
         </div>
     </div>

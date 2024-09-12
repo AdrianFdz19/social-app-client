@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import './styles/profile.scss';
 import { useLocation } from 'react-router-dom';
 import ProfilePic from '../../components/ProfilePic';
@@ -9,8 +9,7 @@ import Post from '../../components/post/Post';
 import CreatePost from '../home/CreatePost';
 
 export default function Profile() {
-
-    const {user, serverUrl} = useAppContext();
+    const { user, serverUrl } = useAppContext();
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
@@ -26,28 +25,31 @@ export default function Profile() {
         },
     });
     const [posts, setPosts] = useState([]);
-    const [feedLastFollowAction, setFeedLastFollowAction] = useState({
+
+    const [lastFollowActionContext, setLastFollowActionContext] = useState({
         targetId: null,
-        follow: null
+        followStatus: null
     });
 
+    //Cuando se detecte un cambio en lasFollowActionContext proveniente de un follow btn hijo
     useEffect(() => {
-        const { targetId, follow } = feedLastFollowAction;
-      
+        const {targetId, followStatus} = lastFollowActionContext;
+
         if (targetId) {
-            console.log('se detecto un cambio', feedLastFollowAction);
-          // Actualizar los posts con el author_id correspondiente al targetId
-          setPosts(prevPosts => 
+        console.log(lastFollowActionContext);
+        // Actualizar los posts con el author_id correspondiente al targetId
+        setPosts(prevPosts => 
             prevPosts.map(post => 
-              post.author_id == targetId
-                ? { ...post, is_following: follow } // Actualizar la propiedad is_following
+            post.author_id == targetId
+                ? { ...post, is_following: followStatus } // Actualizar la propiedad is_following
                 : post // Mantener el post igual si no coincide el author_id
             )
-          );
+        );
+        setProfileInfo(prev => ({...prev, isFollowing: followStatus}));
         }
-      
-    }, [feedLastFollowAction]);
+    }, [lastFollowActionContext]);
 
+    // Get profile posts and profile info
     useEffect(() => {
         const getProfilePosts = async () => {
             try {
@@ -63,12 +65,12 @@ export default function Profile() {
                 console.error("error retrieving the profile posts", err);
             }
         };
+
         const getProfileInfo = async () => {
             try {
                 const response = await fetch(`${serverUrl}/user/profile/id/${id}?user_id=${user.id}`);
                 if(response.ok) {
                     const data = await response.json();
-                    /* console.log(data); */
                     setProfileInfo({
                         id: data.id,
                         email: data.email,
@@ -107,72 +109,71 @@ export default function Profile() {
         
     }, [serverUrl, user, id]);
 
-  return (
-    <div className="profile-cont">
-        <div className="profile-box">
-            {/* <button onClick={() => console.log(profileInfo)} >show profile info</button> */}
-            <div className="hero">
-                <div className="banner-cont">
-                    <img src={profileInfo.imgs.bannerImg} alt='banner' />
-                </div>
-                <div className="info">
-                    <ProfilePic
-                        url={profileInfo.imgs.profilePic}
-                        size={10}
-                        outline={true}
-                    />
-                    <div className="box">
-                        <p id='username' >{profileInfo.username}</p>
-
-                        <div className="btns">
-                            { user.id != profileInfo.id &&
-                                <>
-                                <FollowBtn
-                                    isFollowing={profileInfo.isFollowing}
-                                    serverUrl={serverUrl}
-                                    userId={user.id}
-                                    targetId={profileInfo.id}
-                                    isOnProfile={true}
-                                />
-                                <SendMessage />
-                                </>
-                            }
-                        </div>
+    return (
+        <div className="profile-cont">
+            <div className="profile-box">
+                <div className="hero">
+                    <div className="banner-cont">
+                        <img src={profileInfo.imgs.bannerImg} alt='banner' />
                     </div>
+                    <div className="info">
+                        <ProfilePic
+                            url={profileInfo.imgs.profilePic}
+                            size={10}
+                            outline={true}
+                        />
+                        <div className="box">
+                            <p id='username'>{profileInfo.username}</p>
 
+                            <div className="btns">
+                                { user.id != profileInfo.id &&
+                                    <>
+                                        <FollowBtn
+                                            isFollowing={profileInfo.isFollowing} // hay que cambiar esto
+                                            serverUrl={serverUrl}
+                                            userId={user.id}
+                                            targetId={profileInfo.id}
+                                            setLastFollowActionContext={setLastFollowActionContext}
+                                        />
+                                        <SendMessage />
+                                    </>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
 
-            <div className="profile-body">
-                <div className="profile-feed">
-                    <div className="feed-box">
-                        { user.id == profileInfo.id && 
-                            <CreatePost setPosts={setPosts} />
-                        }
-                        {posts.map((post) => {
-                            return (
-                                <Post
-                                    userId={user.id}
-                                    key={post.id}
-                                    id={post.id}
-                                    authorId={post.author_id}
-                                    authorName={post.author_name}
-                                    authorPic={post.author_pic}
-                                    isAuthorOnline={post.is_author_online}
-                                    content={post.content}
-                                    createdAt={post.created_at}
-                                    updatedAt={post.updated_at}
-                                    likes={post.likes}
-                                    isFollowing={post.is_following} // no se estan estableciendo los following
-                                    serverUrl={serverUrl}
-                                    setFeedLastFollowAction={setFeedLastFollowAction}
-                                />
-                            )
-                        })}
+                <div className="profile-body">
+                    <div className="profile-feed">
+                        <div className="feed-box">
+                            { user.id == profileInfo.id && 
+                                <CreatePost setPosts={setPosts} />
+                            }
+                            {posts.map((post) => {
+                                return (
+                                    <Post
+                                        userId={user.id}
+                                        key={post.id}
+                                        id={post.id}
+                                        authorId={post.author_id}
+                                        authorName={post.author_name}
+                                        authorPic={post.author_pic}
+                                        isAuthorOnline={post.is_author_online}
+                                        content={post.content}
+                                        createdAt={post.created_at}
+                                        updatedAt={post.updated_at}
+                                        likes={post.likes}
+                                        isFollowing={post.is_following}
+                                        serverUrl={serverUrl}
+                                        setLastFollowActionContext={setLastFollowActionContext}
+                                    />
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-  )
+    );
 }

@@ -9,13 +9,12 @@ import { GoPlus as plus } from "react-icons/go";
 import { FiMinus as minus } from "react-icons/fi";
 import { IoMdClose as close } from "react-icons/io";
 import { IoLogOut as logout } from "react-icons/io5";
-
-
+import { BiSolidLike as liked } from "react-icons/bi";
 
 let icons = {
     show, hide,
     guestIcon,
-    like, comment, share, save,
+    like, liked, comment, share, save,
     plus, minus,
     close,
     logout, 

@@ -3,49 +3,42 @@ import './styles/followbtn.scss';
 import icons from '../assets/icons';
 import { BiSolidObjectsHorizontalLeft } from 'react-icons/bi';
 
-export default function FollowBtn({isFollowing, serverUrl, userId, targetId, setFeedLastFollowAction, isOnProfile = false}) {
+export default function FollowBtn({isFollowing, serverUrl, userId, targetId, setLastFollowActionContext}) {
 
   const [isHover, setHover] = useState(false);
-  const [followClient, setFollowClient] = useState(null);
+  const [followStatus, setFollowStatus] = useState(null);
 
   useEffect(() => {
-    if(isOnProfile) {
-      setFollowClient(isFollowing);
-    }
-  }, [isFollowing, isOnProfile]);
+    setFollowStatus(isFollowing);
+  }, [isFollowing]);
 
-  const handleFollowClick =  async () => {
+  const handleClickBtn = async() => {
     try {
-      let isFollow = isOnProfile ? followClient : isFollowing;
-      const response = await fetch(`${serverUrl}/user/${isFollow ? 'unfollow' : 'follow'}?uid=${userId}&tuid=${targetId}`);
+      const response = await fetch(`${serverUrl}/user/${followStatus ? 'unfollow' : 'follow'}?uid=${userId}&tuid=${targetId}`);
       if(response.ok) {
         const data = await response.json();
-        const followInfo = data.followInfo;
-        const {target_id, follow} = followInfo;
-        /* console.log(data); */
-        if(setFeedLastFollowAction) {
-          setFeedLastFollowAction({
-            targetId: target_id,
-            follow: follow
-          });
-        } else {
-          setFollowClient(prev => !prev);
-        }
+        const brief = data.followInfo;
+        console.log(data.msg);
+        setLastFollowActionContext({
+          targetId: JSON.parse(brief.target_id),
+          followStatus: brief.follow
+        });
+        setFollowStatus(prev => !prev);
       } else {
         console.error('Server internal error');
       }
     } catch(err) {
       console.error(err);
     }
-  }
+  };
 
   return (
     <div className="follow-btn-cont"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      onClick={handleFollowClick}
+      onClick={handleClickBtn}
     >
-        {(isOnProfile ? followClient : isFollowing) ? (
+        {followStatus ? (
           <div className={`f-btn-box unfollow ${isHover ? 'unfollow-hover' : ''}`}>
               {isHover ? (
                 <>

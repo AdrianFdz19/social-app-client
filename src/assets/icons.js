@@ -10,6 +10,9 @@ import { FiMinus as minus } from "react-icons/fi";
 import { IoMdClose as close } from "react-icons/io";
 import { IoLogOut as logout } from "react-icons/io5";
 import { BiSolidLike as liked } from "react-icons/bi";
+import { IoMdNotifications as notifications } from "react-icons/io";
+import { BiSolidMessageSquareDetail as messages } from "react-icons/bi";
+
 
 let icons = {
     show, hide,
@@ -18,6 +21,7 @@ let icons = {
     plus, minus,
     close,
     logout, 
+    notifications, messages
 };
 
 export default icons;

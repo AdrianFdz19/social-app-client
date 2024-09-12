@@ -23,6 +23,30 @@ export default function AppProvider({children}) {
     const navigate = useNavigate();
     const redirect = (route) => navigate(route);
 
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        // Función para verificar el ancho de la ventana
+        const handleResize = () => {
+            if (window.innerWidth <= 767) {
+                setIsMobile(true);
+            } else {
+                setIsMobile(false);
+            }
+        };
+
+        // Ejecutar la función al cargar el componente
+        handleResize();
+
+        // Agregar un listener para escuchar cambios en el tamaño de la ventana
+        window.addEventListener('resize', handleResize);
+
+        // Limpiar el listener cuando se desmonte el componente
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     useEffect(() => {
       const getAuthToken = async() => {
         try {
@@ -63,6 +87,7 @@ export default function AppProvider({children}) {
         user, setUser,
         tokenLoading,
         redirect,
+        isMobile
     };
 
   return (

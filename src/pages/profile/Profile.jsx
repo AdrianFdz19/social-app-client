@@ -163,10 +163,11 @@ export default function Profile() {
                                         content={post.content}
                                         createdAt={post.created_at}
                                         updatedAt={post.updated_at}
-                                        likes={post.likes}
+                                        likes={post.likes_count}
                                         isFollowing={post.is_following}
                                         serverUrl={serverUrl}
                                         setLastFollowActionContext={setLastFollowActionContext}
+                                        hasLiked={post.has_liked}
                                     />
                                 )
                             })}

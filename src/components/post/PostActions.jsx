@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import icons from '../../assets/icons';
 
-export default function PostActions({hasLiked, serverUrl, postId}) {
+export default function PostActions({hasLiked, serverUrl, postId, userId, setLikesCount}) {
 
     const [isLike, setIsLike] = useState(null);
 
@@ -11,14 +11,23 @@ export default function PostActions({hasLiked, serverUrl, postId}) {
 
     const handleLikeClick = async () => {
         try {
-            console.log('like click');
-
-            const response = await fetch(`${serverUrl}/posts/post_id/${postId}/${isLike ? 'dislike' : 'like'}?user_id=${postId}`);
+            /* console.log('like click', userId); */
+            const response = await fetch(`${serverUrl}/posts/post_id/${postId}/${isLike ? 'dislike' : 'like'}?user_id=${userId}`, {
+                method: isLike ? 'DELETE' : 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
             if(response.ok) {
                 const data = await response.json();
-                console.log(data);
+                const type = data.type;
                 setIsLike(prev => !prev);
+                if(type) {
+                    setLikesCount(prev => prev + 1);
+                } else {
+                    setLikesCount(prev => prev - 1);
+                }
             } else {
                 console.error('Server internal error');
             }

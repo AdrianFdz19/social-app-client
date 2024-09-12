@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './styles/post.scss'; 
 import ProfilePic from '../ProfilePic';
 import icons from '../../assets/icons';
@@ -7,6 +7,7 @@ import { useAppContext } from '../../context/AppProvider';
 import FollowBtn from '../FollowBtn.jsx';
 import { formatDistanceToNow } from 'date-fns';
 import PostActions from './PostActions.jsx';
+import { useState } from 'react';
 
 export default function Post({userId, id, authorId, authorName, authorPic, isAuthorOnline, content, createdAt, updatedAt, likes, isFollowing, serverUrl, setLastFollowActionContext, hasLiked}) {
 
@@ -14,6 +15,12 @@ export default function Post({userId, id, authorId, authorName, authorPic, isAut
 
     let timeAgo = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
     timeAgo = timeAgo.replace('about ', '');
+
+    const [likesCount, setLikesCount] = useState(null);
+
+    useEffect(() => {
+        setLikesCount(JSON.parse(likes));
+    }, [likes]);
 
   return (
     <div className="post-cont" key={id} >
@@ -55,7 +62,7 @@ export default function Post({userId, id, authorId, authorName, authorPic, isAut
 
             <div className="brief">
                 <div className="box">
-                    <p>0 likes</p>
+                    <p>{likesCount} likes</p>
                     <p>0 comments</p>
                 </div>
             </div>
@@ -64,6 +71,8 @@ export default function Post({userId, id, authorId, authorName, authorPic, isAut
                 hasLiked={hasLiked}
                 serverUrl={serverUrl}
                 postId={id}
+                userId={userId}
+                setLikesCount={setLikesCount}
             />
 
         </div>

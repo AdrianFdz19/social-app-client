@@ -12,5 +12,31 @@
     .header-box {
         width: 90%;
         @include between;
+
+        h3 {
+            cursor: pointer;
+        }
+
+        .sections {
+            @include between;
+            align-items: center;
+
+            .section {
+                width: 2.5rem;
+                height: 2.5rem;
+                @include cont;
+                background-color: gainsboro;
+                border-radius: 100%;
+                cursor: pointer;
+                .icon {
+                    width: 1.5rem;
+                    height: auto;
+                }
+                &.mid {
+                    margin: 0 1rem;
+                }
+            }
+            
+        }
     }
 }

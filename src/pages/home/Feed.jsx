@@ -67,12 +67,11 @@ export default function Feed() {
                   content={post.content}
                   createdAt={post.created_at}
                   updatedAt={post.updated_at}
-                  likes={post.likes}
+                  likes={post.likes_count}
                   isFollowing={post.is_following}
                   serverUrl={serverUrl}
                   setLastFollowActionContext={setLastFollowActionContext}
-                  /* hasLiked={post.has_liked} */
-                  hasLiked={true}
+                  hasLiked={post.has_liked}
                 />
               ))
             }

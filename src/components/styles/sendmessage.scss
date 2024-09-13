@@ -1,0 +1,24 @@
+@import '../../styles.scss';
+
+.sn-msg-cont {
+    border-radius: 10px;
+    cursor: pointer;
+    @include cont;
+    width: auto;
+    .sn-msg-box {
+        margin: 0;
+        @include cont;
+        padding: .3rem .65rem;
+        border-radius: 10px;
+        transition: all .3s ease;
+        background-image: linear-gradient(to bottom, #003dd8, #7c00f8);
+        color: #fff;
+        #icon {
+            margin-right: .45rem;
+        }
+        p {
+            margin: 0;
+            font-weight: 500;
+        }
+    }
+}

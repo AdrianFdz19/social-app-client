@@ -135,7 +135,10 @@ export default function Profile() {
                                             targetId={profileInfo.id}
                                             setLastFollowActionContext={setLastFollowActionContext}
                                         />
-                                        <SendMessage />
+                                        <SendMessage
+                                            userId={user.id}
+                                            targetId={profileInfo.id}
+                                        />
                                     </>
                                 }
                             </div>

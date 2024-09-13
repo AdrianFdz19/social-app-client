@@ -1,0 +1,44 @@
+@import '../../../styles.scss';
+
+.msg-cont {
+    display: flex;
+    margin-bottom: 1rem;
+    .msg-box {
+        border-radius: 10px;
+        @include between;
+        p { margin: 0 }
+        align-items: stretch;
+        box-sizing: border-box;
+        padding: .25rem .75rem;
+        background-color: rgb(227, 227, 227);
+        .content {
+            margin-right: .6rem;
+            padding: .25rem 0;
+            box-sizing: border-box;
+            #content {
+                font-size: .95rem;
+            }
+        }
+        .info {
+            @include between;
+            /* border: 1px solid blue; */
+            align-items: flex-end;
+            #sentat {
+                font-size: .8rem;
+                font-weight: 300;
+            }
+            #status {
+                font-size: .8rem;
+                font-weight: 300;
+                margin-left: .35rem;
+            }
+        }
+    }
+    &.own {
+        justify-content: flex-end;
+        .msg-box {
+            background-color: $secondary-color;
+            color: #fff;
+        }
+    }
+}

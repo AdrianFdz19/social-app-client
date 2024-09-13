@@ -1,0 +1,63 @@
+@import '../../../styles.scss';
+
+.chat-item-cont {
+    transition: all .3s ease;
+    border-bottom: 1px solid gainsboro;
+    @include cont;
+    padding: .7rem .5rem;
+    box-sizing: border-box;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+        background-color: #f7f7f7;
+    }
+    .ch-it-box {
+        width: 100%;
+        @include between;
+        p { margin: 0 }
+        .preview {
+            @include column;
+            flex-grow: 1;
+            margin-left: .75rem;
+            justify-content: space-between;
+            .brief {
+                @include between; 
+                #chatname {
+                    font-size: 1rem;
+                }
+                .sentat {
+                    font-size: .8rem;
+                    color: rgb(117, 117, 117);
+                    font-weight: 300;
+                    &.unread {
+                        font-weight: 500;
+                        color: $secondary-color;
+                    }
+                }
+            }
+            .last-msg {
+                @include between;
+                align-items: flex-end;
+                #lastmsg {
+                    color: rgb(92, 92, 92);
+                    font-weight: 350;
+                }
+                .unread {
+                    min-width: 1rem;
+                    height: 1rem;
+                    padding: .25rem;
+                    border-radius: 100%;
+                    @include cont;
+                    background-color: $secondary-color;
+                    p {
+                        margin: 0;
+                        color: #fff;
+                        font-size: .9rem;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+        }
+    }
+}

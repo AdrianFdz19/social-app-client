@@ -12,7 +12,8 @@ import { IoLogOut as logout } from "react-icons/io5";
 import { BiSolidLike as liked } from "react-icons/bi";
 import { IoMdNotifications as notifications } from "react-icons/io";
 import { BiSolidMessageSquareDetail as messages } from "react-icons/bi";
-
+import { IoIosArrowForward as rightArrow } from "react-icons/io";
+import { TbMessageFilled as sndmsg } from "react-icons/tb";
 
 let icons = {
     show, hide,
@@ -21,7 +22,8 @@ let icons = {
     plus, minus,
     close,
     logout, 
-    notifications, messages
+    notifications, messages, rightArrow,
+    sndmsg
 };
 
 export default icons;

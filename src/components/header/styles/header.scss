@@ -4,14 +4,15 @@
     @include cont;
     border-bottom: 1px solid gainsboro;
     width: 100%;
-    height: 3rem;
+    height: 3.3rem;
     position: fixed;
     z-index: 100;
     background-color: #fff;
     top: 0;
     .header-box {
         width: 90%;
-        @include between;
+        @include between;   
+        position: relative;
 
         h3 {
             cursor: pointer;

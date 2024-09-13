@@ -1,0 +1,18 @@
+@import '../../../styles.scss';
+
+.msgs-parent {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    align-items: stretch;
+    box-sizing: border-box;
+    padding-top: 3.3rem;
+    .msgs-cont {
+        height: 100%;
+        display: flex;
+        align-items: stretch;
+        box-sizing: border-box;
+    }
+}

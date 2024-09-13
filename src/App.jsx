@@ -7,6 +7,7 @@ import NestedRoute from './components/NestedRoute'
 import LayerWithHeader from './components/LayerWithHeader'
 import Home from './pages/home/Home'
 import Profile from './pages/profile/Profile'
+import Messages from './pages/messages/Messages'
 
 function App() {
 
@@ -21,7 +22,9 @@ function App() {
 
               <Route index element={<Home />} ></Route>
 
-              <Route path='/profile/' element={<Profile />} ></Route>
+              <Route path='/profile' element={<Profile />} ></Route>
+
+              <Route path='/messages' element={<Messages />} ></Route>
 
             </Route>
 

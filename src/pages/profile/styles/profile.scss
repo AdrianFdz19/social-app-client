@@ -41,6 +41,9 @@
                     }
                     .btns {
                         @include between;
+                        .sn-msg-cont {
+                            margin-left: .85rem;
+                        }
                     }
                 }
             }
@@ -50,7 +53,7 @@
             @include cont;
             .profile-feed {
                 @include cont;
-                width: 45%;
+                width: 31rem;
                 min-width: 30rem;
                 .feed-box {
                     width: 100%;

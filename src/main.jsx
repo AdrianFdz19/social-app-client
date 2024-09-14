@@ -5,13 +5,16 @@ import './index.css'
 import {BrowserRouter as Router} from 'react-router-dom'
 import AppProvider from './context/AppProvider.jsx'
 import ChatProvider from './context/ChatProvider.jsx'
+import SocketProvider from './context/SocketProvider.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <AppProvider>
-      <ChatProvider>
-        <App />
-      </ChatProvider>
+      <SocketProvider>
+        <ChatProvider>
+          <App />
+        </ChatProvider>
+      </SocketProvider>
     </AppProvider>
   </Router>
 )

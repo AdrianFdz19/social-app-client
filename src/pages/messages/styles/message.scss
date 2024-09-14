@@ -28,9 +28,12 @@
                 font-weight: 300;
             }
             #status {
-                font-size: .8rem;
-                font-weight: 300;
-                margin-left: .35rem;
+                @include cont;
+                margin-left: .3rem;
+                .icon {
+                    width: 1rem;
+                    height: auto;
+                }
             }
         }
     }

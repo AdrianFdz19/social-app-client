@@ -60,5 +60,15 @@
                 }
             }
         }
+        .open-section {
+            text-align: center;
+            p {
+                color: $secondary-color;
+                cursor: pointer;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
     }
 }

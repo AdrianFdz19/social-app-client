@@ -1,35 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './styles/chat.scss';
 import ProfilePic from '../../components/ProfilePic';
 import Message from './Message';
+import { formatTimestamp } from '../../utils/client';
 
-export default function Chat() {
+export default function Chat({serverUrl, userId, activeChatId}) {
 
-    let userId = 1;
+    const [messages, setMessages] = useState([]);
 
-    let clientMessages = [
-        {
-            id: 0,
-            sender_id: 1,
-            content: 'Hi!',
-            status: 'read', /* sent, delivered, read */
-            sent_at: '9:13 p.m.'
-        },
-        {
-            id: 1,
-            sender_id: 2,
-            content: 'Hi! How are you!',
-            status: 'read', /* sent, delivered, read */
-            sent_at: '9:13 p.m.'
-        },
-        {
-            id: 2,
-            sender_id: 1,
-            content: 'Excelent!!!',
-            status: 'read', /* sent, delivered, read */
-            sent_at: '9:13 p.m.'
-        },
-    ];
+    /* {
+        id: 0,
+        sender_id: 1,
+        content: 'Hi!',
+        status: 'read',
+        sent_at: '9:13 p.m.'
+    }, */
+
+    // Get all the messages of the conversation
+    useEffect(() => {
+        const getMessages = async() => {
+            try {
+                const response = await fetch(`${serverUrl}/chats/chat_id/${activeChatId}/messages?user_id=${userId}`);
+                if(response.ok) {
+                    const data = await response.json();
+                    console.log('messages:', data);
+                    setMessages(data);
+                }
+            } catch(err) {
+                console.error(err);
+            }
+        }
+        if (activeChatId) getMessages();
+    }, [serverUrl, userId, activeChatId]);
 
   return (
     <div className="chat-cont">
@@ -44,14 +46,14 @@ export default function Chat() {
 
         <div className="body">
             <div className="messages">
-                {clientMessages.map((msg) => {
+                {messages.map((msg) => {
                     return (
                         <Message
                             key={msg.id}
                             senderId={msg.sender_id}
                             content={msg.content}
                             status={msg.status}
-                            sentAt={msg.sent_at}
+                            sentAt={formatTimestamp(msg.sent_at)}
                             userId={userId}
                         />
                     )

@@ -36,7 +36,7 @@ export default function Profile() {
         const {targetId, followStatus} = lastFollowActionContext;
 
         if (targetId) {
-        console.log(lastFollowActionContext);
+        /* console.log(lastFollowActionContext); */
         // Actualizar los posts con el author_id correspondiente al targetId
         setPosts(prevPosts => 
             prevPosts.map(post => 
@@ -56,7 +56,7 @@ export default function Profile() {
                 const postsResponse = await fetch(`${serverUrl}/posts/profile/id/${id}?user_id=${user.id}`);
                 if(postsResponse.ok) {
                     const data = await postsResponse.json();
-                    console.log(data);
+                    /* console.log(data); */
                     setPosts(data);
                 } else {
                     console.error('Server internal error');
@@ -138,6 +138,7 @@ export default function Profile() {
                                         <SendMessage
                                             userId={user.id}
                                             targetId={profileInfo.id}
+                                            serverUrl={serverUrl}
                                         />
                                     </>
                                 }

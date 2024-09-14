@@ -1,5 +1,6 @@
 import React from 'react'
 import './styles/message.scss';
+import icons from '../../assets/icons';
 
 export default function Message({id, senderId, userId, content, status, sentAt}) {
   return (
@@ -10,7 +11,17 @@ export default function Message({id, senderId, userId, content, status, sentAt})
             </div>
             <div className="info">
                 <p id='sentat' >{sentAt}</p>
-                {senderId == userId && <p id='status' >{status}</p> }
+                {senderId == userId && <div id='status' >
+                  {
+                    status == 'sent' ? (
+                      <icons.check className='icon' />
+                    ) : status == 'delivered' ? (
+                      <icons.check className='icon' />
+                    ) : (
+                      <icons.dbcheck className='icon' />
+                    )
+                  }  
+                </div> }
             </div>
         </div>
     </div>

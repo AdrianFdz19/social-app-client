@@ -14,6 +14,10 @@ import { IoMdNotifications as notifications } from "react-icons/io";
 import { BiSolidMessageSquareDetail as messages } from "react-icons/bi";
 import { IoIosArrowForward as rightArrow } from "react-icons/io";
 import { TbMessageFilled as sndmsg } from "react-icons/tb";
+import { MdOutlineWatchLater as send } from "react-icons/md";
+import { IoCheckmarkSharp as check } from "react-icons/io5";
+import { IoCheckmarkDoneSharp as dbcheck } from "react-icons/io5";
+
 
 let icons = {
     show, hide,
@@ -23,7 +27,7 @@ let icons = {
     close,
     logout, 
     notifications, messages, rightArrow,
-    sndmsg
+    sndmsg, check, dbcheck
 };
 
 export default icons;

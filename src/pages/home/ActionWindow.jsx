@@ -46,9 +46,21 @@ export default function ActionWindow({section, user, redirect, setUser, setActio
                 </div>
             </>
         ) : section == 'notifications' ? (
-            <p>notifications</p>
+            <>
+                <p>notifications</p>
+                <div className="open-section">
+                    <p>Go to notifications</p>
+                </div>
+            </>
         ) : (
-            <p>messages</p>
+            <>
+                <p>messages</p>
+                <div className="open-section">
+                    <p
+                        onClick={() => clickSection(() => redirect(`/messages`))}
+                    >Go to messages</p>
+                </div>
+            </>
         )}
     </>
   )

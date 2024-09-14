@@ -3,6 +3,8 @@ import './styles/sendmessage.scss';
 import icons from '../assets/icons';
 import { useNavigate } from 'react-router-dom';
 import { useChatContext } from '../context/ChatProvider';
+import { useSocket } from '../context/SocketProvider';
+import { joinChat } from '../utils/events';
 
 export default function SendMessage({userId, targetId, serverUrl}) {
 

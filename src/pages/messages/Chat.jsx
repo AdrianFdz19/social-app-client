@@ -4,7 +4,7 @@ import ProfilePic from '../../components/ProfilePic';
 import Message from './Message';
 import { formatTimestamp } from '../../utils/client';
 
-export default function Chat({serverUrl, userId, activeChatId}) {
+export default function Chat({serverUrl, userId, activeChatId, activeChatInfo}) {
 
     const [messages, setMessages] = useState([]);
 
@@ -33,14 +33,18 @@ export default function Chat({serverUrl, userId, activeChatId}) {
         if (activeChatId) getMessages();
     }, [serverUrl, userId, activeChatId]);
 
+    // Recuperar la informacion del chat a traves el activeChatId y los chats
+    const {name, pic} = activeChatInfo;
+
   return (
     <div className="chat-cont">
         <div className="header">
             <div className="chat-info">
                 <ProfilePic
                     size={2.75}
+                    url={pic}
                 />
-                <p id='chatname' >username</p>
+                <p id='chatname' >{name}</p>
             </div>
         </div>
 

@@ -1,10 +1,22 @@
 import React from 'react'
 import './styles/chatitem.scss';
 import ProfilePic from '../../components/ProfilePic';
+import { joinChat } from '../../utils/events';
 
-export default function ChatItem({id, name, pic, isGroup, content, status, sentAt, unread}) {
+export default function ChatItem({id, name, pic, isGroup, content, status, sentAt, unread, socket, setActiveChatInfo}) {
+
+    const handleChatClick = () => {
+        setActiveChatInfo({
+            name,
+            pic
+        });
+        joinChat(socket, id);
+    };  
+
   return (
-    <div className="chat-item-cont">
+    <div className="chat-item-cont"
+        onClick={handleChatClick}
+    >
         <div className="ch-it-box">
             <ProfilePic
                 size={2.75}

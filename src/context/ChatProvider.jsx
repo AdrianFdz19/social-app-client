@@ -23,7 +23,7 @@ export default function ChatProvider({children}) {
   useEffect(() => {
     if (activeChatId !== null) { // Asegúrate de no guardar `null` en localStorage
       localStorage.setItem('activeChatId', JSON.stringify(activeChatId));
-      console.log('New activeChatId set in localStorage: ', activeChatId);
+      /* console.log('New activeChatId set in localStorage: ', activeChatId); */
     }
   }, [activeChatId]); // Este effect se ejecuta cada vez que activeChatId cambia
 

@@ -5,12 +5,11 @@ import { useAppContext } from '../../context/AppProvider'
 import './styles/messages.scss';
 import { useChatContext } from '../../context/ChatProvider';
 import { useSocket } from '../../context/SocketProvider';
-import { joinChat } from '../../utils/events';
 
 export default function Messages() {
     const {user, serverUrl} = useAppContext();
     const socket = useSocket();
-    const {activeChat, setActiveChat, chats, setChats, chatsLoading, chatsError} = useChatContext();
+    const {activeChat, setActiveChat, chats, chatsLoading, chatsError, messages, setMessages} = useChatContext();
     const {name, pic} = activeChat;
 
   return (
@@ -32,6 +31,8 @@ export default function Messages() {
               userId={user.id}
               activeChat={activeChat}
               setActiveChat={setActiveChat}
+              messages={messages}
+              setMessages={setMessages}
               name={name}
               pic={pic}
               chats={chats}

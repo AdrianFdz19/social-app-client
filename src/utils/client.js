@@ -1,6 +1,11 @@
 import { format, isToday, isYesterday } from 'date-fns';
 
 export function formatTimestamp(timestamp) {
+    // Si el timestamp es null o 1, retornamos la hora actual en formato de 'h:mm a'
+    if (!timestamp || timestamp === '1') {
+        return format(new Date(), 'h:mm a'); // Formato de horas para hoy
+    }
+
     const date = new Date(timestamp);
 
     if (isToday(date)) {

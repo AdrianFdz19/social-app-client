@@ -13,6 +13,7 @@ export default function ChatProvider({ children }) {
   const { user, serverUrl } = useAppContext();
   const socket = useSocket();
   const [chats, setChats] = useState([]);
+  const [messages, setMessages] = useState([]);
 
   // Unificar `activeChatId`, `name` y `pic` en un solo estado
   const [activeChat, setActiveChat] = useState(
@@ -68,6 +69,23 @@ export default function ChatProvider({ children }) {
     if (user.id) getChats();
   }, [serverUrl, user.id, activeChat.id]);
 
+  // Get all the messages of the activechat
+  useEffect(() => {
+    const getMessages = async() => {
+        try {
+            const response = await fetch(`${serverUrl}/chats/chat_id/${activeChat?.id}/messages?user_id=${user.id}`);
+            if(response.ok) {
+                const data = await response.json();
+                /* console.log('messages:', data); */
+                setMessages(data);
+            }
+        } catch(err) {
+            console.error(err);
+        }
+      }
+      if (activeChat && user.id) getMessages();
+  }, [serverUrl, activeChat, user.id]);
+
   // useEffect para recibir eventos del socket
   useEffect(() => {
     if (socket) {
@@ -76,6 +94,8 @@ export default function ChatProvider({ children }) {
         /* console.log(data); */ // Mostrar "nuevo mensaje" en la consola
         const newMessage = data.newMessage;
         console.log(newMessage);
+
+        setMessages(prev => ([...prev, newMessage]));
       });
 
       socket.on('chat-notification', (data) => {
@@ -109,7 +129,8 @@ export default function ChatProvider({ children }) {
     chats, setChats,
     activeChat, setActiveChat,
     chatsLoading, setChatsLoading,
-    chatsError, setChatsError
+    chatsError, setChatsError,
+    messages, setMessages
   };
 
   return (

@@ -1,40 +1,120 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useSocket } from './SocketProvider';
+import { joinChat } from '../utils/events';
+import { useAppContext } from './AppProvider';
 
 const ChatContext = createContext();
 
-export const useChatContext = () => {
-    return useContext(ChatContext);
-}
+export const useChatContext = () => useContext(ChatContext);
 
-export default function ChatProvider({children}) {
-
+export default function ChatProvider({ children }) {
+  const [chatsLoading, setChatsLoading] = useState(true);
+  const [chatsError, setChatsError] = useState(null);
+  const { user, serverUrl } = useAppContext();
+  const socket = useSocket();
   const [chats, setChats] = useState([]);
-  const [activeChatId, setActiveChatId] = useState(null);
 
-  // Recuperar el activeChatId del localStorage
-  useEffect(() => {
-    const activeChatIdLocal = JSON.parse(localStorage.getItem('activeChatId'));
-    if (activeChatIdLocal) {
-      setActiveChatId(activeChatIdLocal);
-    }
-  }, []); // Este effect solo se ejecuta una vez al montar el componente
+  // Unificar `activeChatId`, `name` y `pic` en un solo estado
+  const [activeChat, setActiveChat] = useState(
+    () => JSON.parse(localStorage.getItem('activeChat')) || { id: null, name: '', pic: '' }
+  );
 
-  // Detectar un nuevo activeChatId y actualizar localStorage
+  // Manejo del activeChat en localStorage y unión al chat
   useEffect(() => {
-    if (activeChatId !== null) { // Asegúrate de no guardar `null` en localStorage
-      localStorage.setItem('activeChatId', JSON.stringify(activeChatId));
-      /* console.log('New activeChatId set in localStorage: ', activeChatId); */
+    if (activeChat.id !== null) {
+      localStorage.setItem('activeChat', JSON.stringify(activeChat));
+      if(socket) joinChat(socket, activeChat.id);
     }
-  }, [activeChatId]); // Este effect se ejecuta cada vez que activeChatId cambia
+  }, [activeChat, socket]);
+
+  useEffect(() => {
+    if(activeChat.id !== null) {
+      /* console.log('Se detecto un click en algun chat item ', activeChat); */
+      joinChat(socket, activeChat.id);
+    }
+  }, [activeChat]);
+
+  // Recuperar la lista de chats
+  useEffect(() => {
+    const getChats = async () => {
+      setChatsLoading(true);
+      try {
+        const response = await fetch(`${serverUrl}/chats/user_id/${user.id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setChats(data);
+
+          // Si el chat activo existe, actualizamos `activeChat`
+          if (data.length > 0 && activeChat.id) {
+            const currentChat = data.find(chat => chat.id === activeChat.id);
+            if (currentChat) {
+              setActiveChat({
+                id: currentChat.id,
+                name: currentChat.name,
+                pic: currentChat.pic
+              });
+            }
+          }
+        } else {
+          setChatsError('Server internal error');
+        }
+      } catch (err) {
+        setChatsError('Failed to fetch chats');
+      } finally {
+        setChatsLoading(false);
+      }
+    };
+
+    if (user.id) getChats();
+  }, [serverUrl, user.id, activeChat.id]);
+
+  // useEffect para recibir eventos del socket
+  useEffect(() => {
+    if (socket) {
+      // Escuchar eventos del servidor
+      socket.on('new-message', (data) => {
+        /* console.log(data); */ // Mostrar "nuevo mensaje" en la consola
+        const newMessage = data.newMessage;
+        console.log(newMessage);
+      });
+
+      socket.on('chat-notification', (data) => {
+        const chatNot = data.chatNotification;
+        const isNewChat = !chats.some(chat => chat.id === chatNot.id);
+        
+        if (isNewChat) {
+            /* console.log('new chat notification', chatNot); */
+            // Agregar este chatNot como nuevo chat en la lista
+            setChats(prev => ([chatNot, ...prev]));
+        } else {
+            console.log('chat notification', chatNot);
+            // Actualizar el chat con la nueva información (last_message y otras propiedades)
+            setChats(prev => prev.map(chat => 
+                chat.id === chatNot.id ? { ...chat, last_message: chatNot.last_message } : chat
+            ));
+        }
+      });
+    }
+
+    // Limpiar los eventos del socket cuando el componente se desmonte
+    return () => {
+      if (socket) {
+        socket.off('new-message'); // Eliminar el evento 'new-message'
+        socket.off('chat-notification'); // Eliminar el evento 'chat-notification'
+      }
+    };
+  }, [socket, chats]);
 
   const data = {
-      chats, setChats,
-      activeChatId, setActiveChatId
+    chats, setChats,
+    activeChat, setActiveChat,
+    chatsLoading, setChatsLoading,
+    chatsError, setChatsError
   };
 
   return (
-    <ChatContext.Provider value={data} >
-        {children}
+    <ChatContext.Provider value={data}>
+      {children}
     </ChatContext.Provider>
-  )
+  );
 }

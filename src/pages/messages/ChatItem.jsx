@@ -3,14 +3,14 @@ import './styles/chatitem.scss';
 import ProfilePic from '../../components/ProfilePic';
 import { joinChat } from '../../utils/events';
 
-export default function ChatItem({id, name, pic, isGroup, content, status, sentAt, unread, socket, setActiveChatInfo}) {
+export default function ChatItem({id, name, pic, isGroup, content, status, sentAt, unread, setActiveChat}) {
 
     const handleChatClick = () => {
-        setActiveChatInfo({
+        setActiveChat({
+            id,
             name,
             pic
-        });
-        joinChat(socket, id);
+        })
     };  
 
   return (

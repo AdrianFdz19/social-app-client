@@ -4,7 +4,7 @@ import ChatItem from './ChatItem';
 import { useChatContext } from '../../context/ChatProvider';
 import { formatTimestamp } from '../../utils/client';
 
-export default function ChatList({ serverUrl, chats, loading, error, socket, setActiveChatInfo }) {
+export default function ChatList({ serverUrl, chats, loading, error, activeChat, setActiveChat }) {
 
     if (loading) {
         return <div className="chatlist-cont">Loading...</div>;
@@ -36,8 +36,8 @@ export default function ChatList({ serverUrl, chats, loading, error, socket, set
                                 status={lastMessage.status || 'sent'}
                                 sentAt={lastMessage.sent_at ? formatTimestamp(lastMessage.sent_at) : ''}
                                 unread={chat.unread_count}
-                                socket={socket}
-                                setActiveChatInfo={setActiveChatInfo}
+                                activeChat={activeChat}
+                                setActiveChat={setActiveChat}
                             />
                         );
                     })

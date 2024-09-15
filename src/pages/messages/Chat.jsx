@@ -3,10 +3,23 @@ import './styles/chat.scss';
 import ProfilePic from '../../components/ProfilePic';
 import Message from './Message';
 import { formatTimestamp } from '../../utils/client';
+import { sendMessage } from '../../utils/events';
 
-export default function Chat({serverUrl, userId, activeChatId, activeChatInfo}) {
+export default function Chat({serverUrl, userId, activeChat, name, pic, socket}) {
 
     const [messages, setMessages] = useState([]);
+
+    const [message, setMessage] = useState({
+        chatId: null,
+        senderId: userId,
+        content: ""
+    });
+
+    useEffect(() => {
+        if(activeChat.id) {
+            setMessage({...message, chatId: activeChat.id});
+        }
+    }, [activeChat]);
 
     /* {
         id: 0,
@@ -20,21 +33,28 @@ export default function Chat({serverUrl, userId, activeChatId, activeChatInfo}) 
     useEffect(() => {
         const getMessages = async() => {
             try {
-                const response = await fetch(`${serverUrl}/chats/chat_id/${activeChatId}/messages?user_id=${userId}`);
+                const response = await fetch(`${serverUrl}/chats/chat_id/${activeChat?.id}/messages?user_id=${userId}`);
                 if(response.ok) {
                     const data = await response.json();
-                    console.log('messages:', data);
+                    /* console.log('messages:', data); */
                     setMessages(data);
                 }
             } catch(err) {
                 console.error(err);
             }
         }
-        if (activeChatId) getMessages();
-    }, [serverUrl, userId, activeChatId]);
+        if (activeChat) getMessages();
+    }, [serverUrl, userId, activeChat]);
 
-    // Recuperar la informacion del chat a traves el activeChatId y los chats
-    const {name, pic} = activeChatInfo;
+    const handleSendMessage = async(e)=> {
+        e.preventDefault();
+        try {
+            /* console.log('sending message...', message); */
+            sendMessage(socket, message);
+        } catch(err) {
+            console.error(err);
+        }
+    };
 
   return (
     <div className="chat-cont">
@@ -66,8 +86,11 @@ export default function Chat({serverUrl, userId, activeChatId, activeChatInfo}) 
         </div>
 
         <div className="footer">
-            <form className="ft-box">
-                <textarea placeholder='Write a message' ></textarea>
+            <form className="ft-box" onSubmit={handleSendMessage} >
+                <textarea placeholder='Write a message'
+                    value={message.content}
+                    onChange={(e)=>setMessage({...message, content: e.target.value})}
+                ></textarea>
                 <input type="submit" value="Send" />
             </form>
         </div>

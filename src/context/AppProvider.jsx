@@ -28,7 +28,7 @@ export default function AppProvider({children}) {
     useEffect(() => {
         // Función para verificar el ancho de la ventana
         const handleResize = () => {
-            if (window.innerWidth <= 767) {
+            if (window.innerWidth <= 600) {
                 setIsMobile(true);
             } else {
                 setIsMobile(false);

@@ -4,7 +4,7 @@ import ChatItem from './ChatItem';
 import { useChatContext } from '../../context/ChatProvider';
 import { formatTimestamp } from '../../utils/client';
 
-export default function ChatList({ serverUrl, chats, loading, error, activeChat, setActiveChat }) {
+export default function ChatList({ serverUrl, chats, loading, error, activeChat, setActiveChat, changeChatSection }) {
 
     if (loading) {
         return <div className="chatlist-cont">Loading...</div>;
@@ -21,7 +21,9 @@ export default function ChatList({ serverUrl, chats, loading, error, activeChat,
             </div>
             <div className="list">
                 {chats.length === 0 ? (
-                    <div>No chats available</div>
+                    <div className="empty-list">
+                        <p>You don't have any chats yet. Start a conversation!</p>
+                    </div>
                 ) : (
                     chats.map((chat) => {
                         const lastMessage = chat.last_message || {};
@@ -38,6 +40,7 @@ export default function ChatList({ serverUrl, chats, loading, error, activeChat,
                                 unread={chat.unread_count}
                                 activeChat={activeChat}
                                 setActiveChat={setActiveChat}
+                                changeChatSection={changeChatSection}
                             />
                         );
                     })

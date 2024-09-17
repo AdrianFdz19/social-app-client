@@ -59,3 +59,15 @@
         }
     }
 }
+
+// Movil
+@media screen and (max-width: 600px) {
+    .modal-box {
+        width: 90%;
+        min-width: auto;
+        background-color: #fff;
+        border-radius: 10px;
+        padding: .7rem;
+        box-sizing: border-box;
+    }
+}

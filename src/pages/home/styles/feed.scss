@@ -3,10 +3,24 @@
 .feed-cont {
     margin-top: 1.25rem;
     @include cont;
-    width: 31rem;
+    width: 30rem;
     min-width: 30rem;
     .feed-box {
         width: 100%;
         @include column;
+    }
+}
+
+// Movil
+@media screen and (max-width: 600px) {
+    .feed-cont {
+        margin-top: 1.25rem;
+        @include cont;
+        width: 100%;
+        min-width: auto;
+        .feed-box {
+            width: 90%;
+            @include column;
+        }
     }
 }

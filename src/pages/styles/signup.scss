@@ -2,7 +2,9 @@
 
 .sign-up-cont {
     @include cont;
-    min-height: 100vh;
+    height: 100vh;
+    position: fixed;
+    top: 0;
     .sg-up-box {
         border: 1px solid gainsboro;
         width: 45%;
@@ -87,6 +89,103 @@
                     color: #da0000;
                     font-size: .9rem;
                     margin: .25rem 0;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .sign-up-cont {
+        @include cont;
+        height: 80vh;
+        position: fixed;
+        top: 0;
+        .sg-up-box {
+            border: 1px solid gainsboro;
+            width: 45%;
+            min-width: 25rem;
+            @include cont;
+            box-sizing: border-box;
+            form {  
+                @include column;
+                width: 90%;
+                padding: 1rem 0;
+                h3 {
+                    display: flex;
+                    justify-content: flex-start;
+                    margin: 0;
+                }
+                .question {
+                    display: flex;
+                    align-items: center;
+                    margin: 1rem 0;
+                    p {
+                        margin: 0;
+                    }
+                    label {
+                        margin-left: 1rem;
+                        font-weight: 500;
+                        cursor: pointer;
+                    }
+                }
+                input {
+                    width: 100%;
+                    height: 2rem;
+                    box-sizing: border-box;
+                    margin: .5rem 0;
+                    border: 1px solid gainsboro;
+                    background-color: transparent;
+                    &:focus {
+                        outline: 1px solid gainsboro;
+                    }
+                }
+                .pw-box {
+                    position: relative;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    input {
+                        width: 100%;
+                    }
+                    button {
+                        @include cont;
+                        position: absolute;
+                        right: .75rem;
+                        border: none;
+                        background-color: transparent;
+                        width: 1.75rem;
+                        height: auto;
+                        .icon {
+                            cursor: pointer;
+                            width: 100%;
+                            height: auto;
+                        }
+                    }
+                    
+                }
+                #submit {
+                    cursor: pointer;
+                }
+                .submit-false {
+                    width: 100%;
+                    height: 2rem;
+                    box-sizing: border-box;
+                    margin: .5rem 0;
+                    border: 1px solid gainsboro;
+                    @include cont;
+                    font-size: .85rem;
+                }
+
+                .err-msg-box {
+                    @include column;
+                    margin-bottom: .5rem;
+                    .error-msg {
+                        margin: 0;
+                        color: #da0000;
+                        font-size: .9rem;
+                        margin: .25rem 0;
+                    }
                 }
             }
         }

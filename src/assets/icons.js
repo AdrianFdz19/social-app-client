@@ -17,6 +17,7 @@ import { TbMessageFilled as sndmsg } from "react-icons/tb";
 import { MdOutlineWatchLater as send } from "react-icons/md";
 import { IoCheckmarkSharp as check } from "react-icons/io5";
 import { IoCheckmarkDoneSharp as dbcheck } from "react-icons/io5";
+import { IoIosArrowBack as leaveArrow } from "react-icons/io";
 
 
 let icons = {
@@ -27,7 +28,8 @@ let icons = {
     close,
     logout, 
     notifications, messages, rightArrow,
-    sndmsg, check, dbcheck
+    sndmsg, check, dbcheck,
+    leaveArrow
 };
 
 export default icons;

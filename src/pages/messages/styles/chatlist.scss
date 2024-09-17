@@ -19,5 +19,11 @@
         @include column;
         box-sizing: border-box;
         padding: 1rem;
+        .empty-list {
+            
+            p {
+                color: rgb(144, 144, 144);
+            }
+        }
     }
 }

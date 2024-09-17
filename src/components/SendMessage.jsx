@@ -5,10 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { useChatContext } from '../context/ChatProvider';
 import { useSocket } from '../context/SocketProvider';
 import { joinChat } from '../utils/events';
+import { useAppContext } from '../context/AppProvider';
 
 export default function SendMessage({userId, targetId, serverUrl}) {
 
-  const {setActiveChat} = useChatContext();
+  const {isMobile} = useAppContext();
+  const {setActiveChat, setOnMobile} = useChatContext();
   const navigate = useNavigate();
 
   const handleSendMessage = async () => {
@@ -19,6 +21,7 @@ export default function SendMessage({userId, targetId, serverUrl}) {
         const {chatId} = data;
         // console.log(data); // {isChatExists: false, chatId: 1}
         setActiveChat(prev => ({...prev, id: chatId}));
+        if(isMobile) setOnMobile(prev => ({...prev, isOnChat: true}));
         navigate('/messages');
       } else {
         console.error('Server internal error');

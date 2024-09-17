@@ -15,6 +15,10 @@ export default function ChatProvider({ children }) {
   const [chats, setChats] = useState([]);
   const [messages, setMessages] = useState([]);
 
+  const [onMobile, setOnMobile] = useState({
+    isOnChat: false,
+  });
+
   // Unificar `activeChatId`, `name` y `pic` en un solo estado
   const [activeChat, setActiveChat] = useState(
     () => JSON.parse(localStorage.getItem('activeChat')) || { id: null, name: '', pic: '' }
@@ -93,13 +97,20 @@ export default function ChatProvider({ children }) {
       socket.on('new-message', (data) => {
         /* console.log(data); */ // Mostrar "nuevo mensaje" en la consola
         const newMessage = data.newMessage;
+        const {content, status, sent_at} = newMessage;
         console.log(newMessage);
 
         setMessages(prev => ([...prev, newMessage]));
+
+        // Renderizar la informacion del ultimo mensaje en chatList !!!
+        setChats(prev => prev.map(chat => 
+            chat.id === newMessage.chat_id ? { ...chat, last_message: { content, status, sent_at } } : chat
+        ));
       });
 
       socket.on('chat-notification', (data) => {
         const chatNot = data.chatNotification;
+        console.log(chatNot);
         const isNewChat = !chats.some(chat => chat.id === chatNot.id);
         
         if (isNewChat) {
@@ -130,7 +141,8 @@ export default function ChatProvider({ children }) {
     activeChat, setActiveChat,
     chatsLoading, setChatsLoading,
     chatsError, setChatsError,
-    messages, setMessages
+    messages, setMessages,
+    onMobile, setOnMobile
   };
 
   return (

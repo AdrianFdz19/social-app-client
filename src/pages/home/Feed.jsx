@@ -58,11 +58,13 @@ export default function Feed() {
               posts.map((post) => (
                 <Post
                   userId={user.id}
+                  username={user.username}
                   key={post.id}
                   id={post.id}
                   authorId={post.author_id}
                   authorName={post.author_name}
                   authorPic={post.author_pic}
+                  userPic={user.imgs.profilePic}
                   isAuthorOnline={post.is_author_online}
                   content={post.content}
                   createdAt={post.created_at}
@@ -72,6 +74,8 @@ export default function Feed() {
                   serverUrl={serverUrl}
                   setLastFollowActionContext={setLastFollowActionContext}
                   hasLiked={post.has_liked}
+                  prevComments={post.prev_comments}
+                  commentsCount={post.comments_count}
                 />
               ))
             }

@@ -158,6 +158,7 @@ export default function Profile() {
                                 return (
                                     <Post
                                         userId={user.id}
+                                        userPic={user.imgs.profilePic}
                                         key={post.id}
                                         id={post.id}
                                         authorId={post.author_id}
@@ -172,6 +173,8 @@ export default function Profile() {
                                         serverUrl={serverUrl}
                                         setLastFollowActionContext={setLastFollowActionContext}
                                         hasLiked={post.has_liked}
+                                        prevComments={post.prev_comments}
+                                        commentsCount={post.comments_count}
                                     />
                                 )
                             })}

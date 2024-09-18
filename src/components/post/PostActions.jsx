@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import icons from '../../assets/icons';
+import CommentBox from './CommentBox';
 
-export default function PostActions({hasLiked, serverUrl, postId, userId, setLikesCount}) {
+export default function PostActions({hasLiked, serverUrl, postId, userId, username, userPic, setLikesCount, prevComments, commentsCount}) {
 
+    const [commentBox, setCommentBox] = useState(false);
     const [isLike, setIsLike] = useState(null);
 
+    // COMMENTS
+    const handleCommentClick = () => setCommentBox(prev => !prev);
+
+    // LIKES
     useEffect(() => {
         setIsLike(hasLiked);
     }, [hasLiked]);
@@ -54,7 +60,9 @@ export default function PostActions({hasLiked, serverUrl, postId, userId, setLik
                     </>
                 )}
             </div>
-            <div className="button">
+            <div className="button"
+                onClick={handleCommentClick}
+            >
                 <icons.comment className='icon' />
                 <p>comment</p>
             </div>
@@ -67,6 +75,19 @@ export default function PostActions({hasLiked, serverUrl, postId, userId, setLik
                 <p>save</p>
             </div>
         </div>
+        {
+            (prevComments.length > 0 || commentBox) &&
+            <CommentBox
+                close={handleCommentClick}
+                serverUrl={serverUrl}
+                postId={postId}
+                userId={userId}
+                username={username}
+                userPic={userPic}
+                prevComments={prevComments}
+                commentsCount={commentsCount}
+            />
+        }
     </div>
 )
 }

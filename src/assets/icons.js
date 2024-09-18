@@ -18,7 +18,7 @@ import { MdOutlineWatchLater as send } from "react-icons/md";
 import { IoCheckmarkSharp as check } from "react-icons/io5";
 import { IoCheckmarkDoneSharp as dbcheck } from "react-icons/io5";
 import { IoIosArrowBack as leaveArrow } from "react-icons/io";
-
+import { FaCircleArrowRight as sendArrow } from "react-icons/fa6";
 
 let icons = {
     show, hide,
@@ -29,7 +29,7 @@ let icons = {
     logout, 
     notifications, messages, rightArrow,
     sndmsg, check, dbcheck,
-    leaveArrow
+    leaveArrow, sendArrow
 };
 
 export default icons;

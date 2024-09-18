@@ -9,7 +9,7 @@ import { formatDistanceToNow } from 'date-fns';
 import PostActions from './PostActions.jsx';
 import { useState } from 'react';
 
-export default function Post({userId, id, authorId, authorName, authorPic, isAuthorOnline, content, createdAt, updatedAt, likes, isFollowing, serverUrl, setLastFollowActionContext, hasLiked}) {
+export default function Post({userId, username, id, authorId, authorName, authorPic, userPic, isAuthorOnline, content, createdAt, updatedAt, likes, isFollowing, serverUrl, setLastFollowActionContext, hasLiked, prevComments, commentsCount}) {
 
     const {redirect} = useAppContext();
 
@@ -63,7 +63,7 @@ export default function Post({userId, id, authorId, authorName, authorPic, isAut
             <div className="brief">
                 <div className="box">
                     <p>{likesCount} likes</p>
-                    <p>0 comments</p>
+                    <p>{commentsCount} comments</p>
                 </div>
             </div>
 
@@ -72,7 +72,11 @@ export default function Post({userId, id, authorId, authorName, authorPic, isAut
                 serverUrl={serverUrl}
                 postId={id}
                 userId={userId}
+                username={username}
+                userPic={userPic}
                 setLikesCount={setLikesCount}
+                prevComments={prevComments}
+                commentsCount={commentsCount}
             />
 
         </div>

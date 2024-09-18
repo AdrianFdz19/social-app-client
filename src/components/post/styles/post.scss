@@ -72,7 +72,8 @@
         }
         .actions {
             /* border: 1px solid gainsboro; */
-            @include cont;
+            @include column;
+            align-items: center;
             .box {
                 width: 100%;
                 @include between;

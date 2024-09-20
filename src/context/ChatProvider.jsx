@@ -121,7 +121,7 @@ export default function ChatProvider({ children }) {
             console.log('chat notification', chatNot);
             // Actualizar el chat con la nueva información (last_message y otras propiedades)
             setChats(prev => prev.map(chat => 
-                chat.id === chatNot.id ? { ...chat, last_message: chatNot.last_message } : chat
+                chat.id === chatNot.id ? { ...chat, last_message: chatNot.last_message, unread_count: chatNot.unread } : chat
             ));
         }
       });

@@ -95,7 +95,6 @@ export default function ChatProvider({ children }) {
     if (socket) {
       // Escuchar eventos del servidor
       socket.on('new-message', (data) => {
-        /* console.log(data); */ // Mostrar "nuevo mensaje" en la consola
         const newMessage = data.newMessage;
         const {content, status, sent_at} = newMessage;
         console.log(newMessage);
@@ -110,15 +109,16 @@ export default function ChatProvider({ children }) {
 
       socket.on('chat-notification', (data) => {
         const chatNot = data.chatNotification;
-        console.log(chatNot);
         const isNewChat = !chats.some(chat => chat.id === chatNot.id);
         
         if (isNewChat) {
-            /* console.log('new chat notification', chatNot); */
+            console.log('new chat notification');
+            const {id, is_group, last_message, name, pic, unread} = chatNot;
             // Agregar este chatNot como nuevo chat en la lista
-            setChats(prev => ([chatNot, ...prev]));
+            
+            setChats(prev => ([{id, is_group, last_message, name, pic, unread_count: unread}, ...prev]));
         } else {
-            console.log('chat notification', chatNot);
+            console.log('chat notification');
             // Actualizar el chat con la nueva información (last_message y otras propiedades)
             setChats(prev => prev.map(chat => 
                 chat.id === chatNot.id ? { ...chat, last_message: chatNot.last_message, unread_count: chatNot.unread } : chat

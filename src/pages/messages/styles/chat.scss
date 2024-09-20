@@ -61,6 +61,7 @@
         .messages {
             width: 100%;
             @include column;
+            overflow-y: scroll;
         }
     }
     .footer {

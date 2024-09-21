@@ -17,12 +17,10 @@ export default function Chat({ serverUrl, userId, activeChat, messages, setMessa
 
     const messagesEndRef = useRef(null); // Referencia para el final de los mensajes
 
-    useEffect(() => {
-        if (userId) {
-            setMessage(prev => ({ ...prev, senderId: userId }));
-        }
-    }, [userId]);
+    // Usaremos esta referencia para observar los mensajes
+    const messageRefs = useRef([]);
 
+    // Actualiza el id de chat cuando cambia activeChat
     useEffect(() => {
         if (activeChat.id) {
             setMessage((prevMessage) => ({
@@ -32,11 +30,82 @@ export default function Chat({ serverUrl, userId, activeChat, messages, setMessa
         }
     }, [activeChat]);
 
-    // Mueve el scroll al final cuando hay nuevos mensajes
+    // Listener de mensajes leídos
+    useEffect(() => {
+        if (socket) {
+            socket.on('read-message', (message) => {
+                const { chatId, messageId } = message;
+                console.log(`Alguien leyó tu mensaje: `, messageId);
+    
+                setMessages((prevMessages) =>
+                    prevMessages.map((msg) =>
+                        msg.id == messageId && msg.status === 'sent'
+                            ? { ...msg, status: 'read' }
+                            : msg
+                    )
+                );
+            });
+        }
+    
+        return () => {
+            if (socket) {
+                socket.off('read-message');
+            }
+        };
+    }, [socket]);
+
+    // Actualiza el scroll cuando hay nuevos mensajes
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
 
+    // Observer para detectar mensajes visibles
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const messageId = entry.target.getAttribute('data-message-id');
+                const senderId = entry.target.getAttribute('data-sender-id');
+                const status = entry.target.getAttribute('data-status');
+
+                // Solo observar los mensajes en estado 'sent'
+                if (!messageId || status !== 'sent') return;
+
+                if (entry.isIntersecting && Number(senderId) !== Number(userId)) {
+                    /* console.log('Mensaje visto: ', messageId, 'SenderId:', senderId, 'UserId:', userId); */
+                    
+                    // Emitir evento solo si el mensaje aún no ha sido leído
+                    socket.emit('read-message', { messageId, chatId: activeChat.id, senderId });
+                    
+                    // Actualiza el estado local para marcar como leído
+                    setMessages(prevMessages =>
+                        prevMessages.map(msg =>
+                            msg.id == messageId
+                                ? { ...msg, status: 'read' }
+                                : msg
+                        )
+                    );
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Filtra los mensajes no leídos y observar esos
+        const unreadMessages = messageRefs.current.filter((ref, index) => {
+            const msg = messages[index];
+            return msg && msg.status === 'sent';
+        });
+
+        unreadMessages.forEach(ref => {
+            if (ref) observer.observe(ref);
+        });
+
+        return () => {
+            unreadMessages.forEach(ref => {
+                if (ref) observer.unobserve(ref);
+            });
+        };
+    }, [messages, socket, userId, activeChat.id]); // Aquí incluyes `messages` para actualizar el observer en mensajes nuevos
+
+    // Manejo de envío de mensajes
     const handleSendMessage = async (e) => {
         e.preventDefault();
         try {
@@ -68,17 +137,26 @@ export default function Chat({ serverUrl, userId, activeChat, messages, setMessa
 
                         <div className="body">
                             <div className="messages">
-                                {messages.map((msg) => (
-                                    <Message
-                                        key={msg.message_id}
-                                        senderId={msg.sender_id}
-                                        content={msg.content}
-                                        status={msg.status}
-                                        sentAt={formatTimestamp(msg.sent_at)}
-                                        userId={userId}
-                                        isRead={false}
-                                    />
-                                ))}
+                                {messages
+                                    .filter(msg => msg.id)  // Filtra solo mensajes que tengan message_id definido
+                                    .map((msg, index) => (
+                                        <div 
+                                            key={msg.id} 
+                                            ref={el => messageRefs.current[index] = el} 
+                                            data-message-id={msg.id}
+                                            data-sender-id={msg.sender_id}
+                                            data-status={msg.status} 
+                                        >
+                                            <Message
+                                                key={msg.id}
+                                                senderId={msg.sender_id}
+                                                content={msg.content}
+                                                status={msg.status}
+                                                sentAt={formatTimestamp(msg.sent_at)}
+                                                userId={userId}
+                                            />
+                                        </div>
+                                    ))}
                                 <div ref={messagesEndRef} /> {/* Esto es para el scroll */}
                             </div>
                         </div>

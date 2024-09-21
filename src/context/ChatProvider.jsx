@@ -125,6 +125,7 @@ export default function ChatProvider({ children }) {
             ));
         }
       });
+      
     }
 
     // Limpiar los eventos del socket cuando el componente se desmonte

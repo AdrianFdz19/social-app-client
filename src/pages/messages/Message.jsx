@@ -2,7 +2,7 @@ import React from 'react'
 import './styles/message.scss';
 import icons from '../../assets/icons';
 
-export default function Message({id, senderId, userId, content, status, sentAt}) {
+export default function Message({id, senderId, userId, content, status, sentAt, isRead}) {
 
   let isOwn = senderId === userId;
 

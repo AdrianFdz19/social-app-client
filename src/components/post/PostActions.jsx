@@ -76,7 +76,7 @@ export default function PostActions({hasLiked, serverUrl, postId, userId, userna
             </div>
         </div>
         {
-            (prevComments.length > 0 || commentBox) &&
+            (prevComments && prevComments.length > 0 || commentBox) &&
             <CommentBox
                 close={handleCommentClick}
                 serverUrl={serverUrl}

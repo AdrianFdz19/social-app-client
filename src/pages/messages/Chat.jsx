@@ -7,7 +7,7 @@ import { sendMessage } from '../../utils/events';
 import { v4 } from 'uuid';
 import icons from '../../assets/icons';
 
-export default function Chat({ serverUrl, userId, activeChat, messages, setMessages, setChats, name, pic, socket, changeChatSection = null }) {
+export default function Chat({ serverUrl, userId, activeChat, messages, setMessages, chats, setChats, name, pic, socket, changeChatSection = null }) {
     const [message, setMessage] = useState({
         chatId: null,
         senderId: userId || null,
@@ -35,8 +35,7 @@ export default function Chat({ serverUrl, userId, activeChat, messages, setMessa
         if (socket) {
             socket.on('read-message', (message) => {
                 const { chatId, messageId } = message;
-                console.log(`Alguien leyó tu mensaje: `, messageId);
-    
+                /* console.log(`Alguien leyó tu mensaje: `, messageId); */
                 setMessages((prevMessages) =>
                     prevMessages.map((msg) =>
                         msg.id == messageId && msg.status === 'sent'
@@ -74,7 +73,12 @@ export default function Chat({ serverUrl, userId, activeChat, messages, setMessa
                     /* console.log('Mensaje visto: ', messageId, 'SenderId:', senderId, 'UserId:', userId); */
                     
                     // Emitir evento solo si el mensaje aún no ha sido leído
-                    socket.emit('read-message', { messageId, chatId: activeChat.id, senderId });
+                    socket.emit('read-message', { messageId, chatId: activeChat.id, senderId, userId });
+                    // Actualiza los chats locales para actualizar el unread_count especifico
+
+                    setChats(prev => prev.map(chat => 
+                        chat.id === activeChat.id ? { ...chat, unread_count: chat.unread_count - 1 } : chat
+                    ));
                     
                     // Actualiza el estado local para marcar como leído
                     setMessages(prevMessages =>

@@ -10,7 +10,7 @@ export default function CommentBox({close, serverUrl, postId, userId, username, 
 
     const [comments, setComments] = useState([]);
     useEffect(() => {
-        if(prevComments.length > 0) {
+        if(prevComments && prevComments.length > 0) {
             setComments(prevComments);
         }
     }, [prevComments]);

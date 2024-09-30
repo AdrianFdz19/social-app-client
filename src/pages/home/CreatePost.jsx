@@ -31,7 +31,12 @@ export default function CreatePost({setPosts}) {
             if(postResponse.ok) {
                 const data = await postResponse.json();
                 /* console.log(data); */
-                setPosts(prev => ([data, ...prev]));
+                const newPostData = {
+                    ...data,
+                    comments_count: 0,
+                }
+                console.log(newPostData);
+                setPosts(prev => ([newPostData, ...prev]));
                 changeOpenModal();
             } else {
                 console.error('Server internal error');

@@ -10,7 +10,7 @@ import { useSocket } from '../../context/SocketProvider';
 export default function Messages() {
     const {user, serverUrl, isMobile} = useAppContext();
     const socket = useSocket();
-    const {activeChat, setActiveChat, chats, chatsLoading, chatsError, messages, setMessages, onMobile, setOnMobile} = useChatContext();
+    const {activeChat, setActiveChat, chats, setChats, chatsLoading, chatsError, messages, setMessages, onMobile, setOnMobile} = useChatContext();
     const {name, pic} = activeChat;
 
     const changeChatSection = () => {
@@ -31,6 +31,7 @@ export default function Messages() {
                     setActiveChat={setActiveChat}
                     messages={messages}
                     setMessages={setMessages}
+                    setChats={setChats}
                     name={name}
                     pic={pic}
                     chats={chats}
@@ -71,6 +72,7 @@ export default function Messages() {
                   setActiveChat={setActiveChat}
                   messages={messages}
                   setMessages={setMessages}
+                  setChats={setChats}
                   name={name}
                   pic={pic}
                   chats={chats}

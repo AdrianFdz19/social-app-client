@@ -87,7 +87,7 @@ export default function ChatProvider({ children }) {
             console.error(err);
         }
       }
-      if (activeChat && user.id) getMessages();
+      if (activeChat.id && user.id) getMessages();
   }, [serverUrl, activeChat, user.id]);
 
   // useEffect para recibir eventos del socket
@@ -97,7 +97,6 @@ export default function ChatProvider({ children }) {
       socket.on('new-message', (data) => {
         const newMessage = data.newMessage;
         const {content, status, sent_at} = newMessage;
-        console.log(newMessage);
 
         setMessages(prev => ([...prev, newMessage]));
 
@@ -124,8 +123,7 @@ export default function ChatProvider({ children }) {
                 chat.id === chatNot.id ? { ...chat, last_message: chatNot.last_message, unread_count: chatNot.unread } : chat
             ));
         }
-      });
-      
+      }); 
     }
 
     // Limpiar los eventos del socket cuando el componente se desmonte

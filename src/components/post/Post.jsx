@@ -19,7 +19,14 @@ export default function Post({userId, username, id, authorId, authorName, author
     const [likesCount, setLikesCount] = useState(null);
 
     useEffect(() => {
-        setLikesCount(JSON.parse(likes));
+        if (typeof likes == 'string') {
+            /* console.log('Los likes estan en formato string'); */
+            setLikesCount(JSON.parse(likes));
+        } else {
+            /* console.log('Los likes estan en formato number'); */
+            setLikesCount(likes);
+        }
+        setLikesCount(likes);
     }, [likes]);
 
   return (

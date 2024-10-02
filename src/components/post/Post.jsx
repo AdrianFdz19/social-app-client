@@ -9,30 +9,25 @@ import { formatDistanceToNow } from 'date-fns';
 import PostActions from './PostActions.jsx';
 import { useState } from 'react';
 
-export default function Post({userId, username, id, authorId, authorName, authorPic, userPic, isAuthorOnline, content, createdAt, updatedAt, likes, isFollowing, serverUrl, setLastFollowActionContext, hasLiked, prevComments, commentsCount}) {
+export default function Post({userId, username, id, authorId, authorName, authorPic, userPic, isAuthorOnline, content, createdAt, updatedAt, likes, isFollowing, serverUrl, setLastFollowActionContext, hasLiked, prevComments, commentsCount, socket}) {
 
     const {redirect} = useAppContext();
 
     let timeAgo = formatDistanceToNow(new Date(updatedAt), { addSuffix: true });
     timeAgo = timeAgo.replace('about ', '');
 
-    const [likesCount, setLikesCount] = useState(null);
+    const [likesCount, setLikesCount] = useState(likes || 0);
 
     useEffect(() => {
-        if (typeof likes == 'string') {
-            /* console.log('Los likes estan en formato string'); */
-            setLikesCount(JSON.parse(likes));
-        } else {
-            /* console.log('Los likes estan en formato number'); */
-            setLikesCount(likes);
-        }
-        setLikesCount(likes);
+        console.log(typeof likes);
     }, [likes]);
 
   return (
     <div className="post-cont" key={id} >
         <div className="post-box">
-
+            {/* <button
+                onClick={()=>console.log(typeof likes)}
+            >Ver info</button> */}
             <div className="header">
                 <div className="box">
                     <div className="author-info">
@@ -55,6 +50,7 @@ export default function Post({userId, username, id, authorId, authorName, author
                                 userId={userId}
                                 targetId={authorId}
                                 setLastFollowActionContext={setLastFollowActionContext}
+                                socket={socket}
                             />
                         }
                     </div>

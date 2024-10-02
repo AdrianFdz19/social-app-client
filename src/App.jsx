@@ -8,6 +8,7 @@ import LayerWithHeader from './components/LayerWithHeader'
 import Home from './pages/home/Home'
 import Profile from './pages/profile/Profile'
 import Messages from './pages/messages/Messages'
+import Notifications from './pages/notifications/Notifications'
 
 function App() {
 
@@ -25,6 +26,8 @@ function App() {
               <Route path='/profile' element={<Profile />} ></Route>
 
               <Route path='/messages' element={<Messages />} ></Route>
+
+              <Route path='/notifications' element={<Notifications />} ></Route>
 
             </Route>
 

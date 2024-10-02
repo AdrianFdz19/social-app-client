@@ -14,3 +14,11 @@ export function sendMessage (socket, message) {
         return socket.emit('send-message', message);
     }
 }
+
+export function followNotification (socket, userId, targetId) {
+    if(!socket || !userId || !targetId) return;
+
+    if(socket) {
+        return socket.emit('follow-notification', {userId, targetId});
+    }
+}

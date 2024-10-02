@@ -4,12 +4,14 @@ import { useAppContext } from '../../context/AppProvider';
 import { Link, useNavigate } from 'react-router-dom';
 import ProfilePic from '../ProfilePic';
 import icons from '../../assets/icons';
-import ActionWindow from '../../pages/home/ActionWindow';
 import { useRef } from 'react';
+import { useNotifications } from '../../context/NotificationsProvider';
+import ActionWindow from '../../pages/home/actionwindow/ActionWindow';
 
 export default function Header() {
   const navigate = useNavigate()
   const {user, setUser} = useAppContext();
+  const {notCount} = useNotifications();
   const [actionsWindow, setActionsWindow] = useState({
     open: false,
     section: ''
@@ -64,6 +66,11 @@ export default function Header() {
               <div className="section mid"
                 onClick={()=>handleWindow('notifications')}
               >
+                {notCount > 0 && 
+                  <div className="not-count">
+                    {notCount <= 10 ? notCount : '+10'}
+                  </div>
+                }
                 <icons.notifications className='icon' />
               </div>
               <div className="section" id='profile'

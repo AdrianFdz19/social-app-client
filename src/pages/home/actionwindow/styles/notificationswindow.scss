@@ -1,0 +1,71 @@
+@import '../../../../styles.scss';
+
+.read {
+
+}
+
+.notnew {
+    background-color: rgba(129, 188, 255, 0.128);
+    &:hover {
+        background-color: rgba(94, 169, 255, 0.128);
+    }
+}
+
+.notsection {
+    cursor: pointer;
+    transition: all .3s ease;
+    width: 100%;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 0 .5rem;
+    height: 3rem;
+    @include between;
+    align-items: center;
+    margin-bottom: .1rem;
+    .brief {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon-box {
+            width: 2.3rem;
+            height: 2.3rem;
+            @include cont;
+            .icon {
+                width: 1.75rem;
+                height: auto;
+            }
+        }
+    }
+    .content {
+        display: flex;
+        align-items: flex-start;
+        display: inline;
+        margin-left: 1rem;
+        flex-grow: 1;
+        #sourcename, #text {
+            display: inline;
+            margin: 0;
+            padding: 0;
+            font-size: .9rem;
+        }
+        #sourcename {
+            font-weight: 450;
+        }
+        #text {
+            margin-left: .4rem;
+            font-weight: 350;
+        }
+    }
+}
+
+.open-section {
+    margin-top: .5rem;
+    text-align: center;
+    p {
+        color: $secondary-color;
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

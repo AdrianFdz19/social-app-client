@@ -1,7 +1,8 @@
 import React from 'react'
-import ProfilePic from '../../components/ProfilePic'
 import './styles/actionwindow.scss'
-import icons from '../../assets/icons'
+import ProfilePic from '../../../components/ProfilePic';
+import icons from '../../../assets/icons';
+import NotificationsWindow from './NotificationsWindow';
 
 export default function ActionWindow({section, user, redirect, setUser, setActionsWindow}) {
 
@@ -47,10 +48,9 @@ export default function ActionWindow({section, user, redirect, setUser, setActio
             </>
         ) : section == 'notifications' ? (
             <>
-                <p>notifications</p>
-                <div className="open-section">
-                    <p>Go to notifications</p>
-                </div>
+                <NotificationsWindow
+                    handleClick={() => clickSection(() => redirect('/notifications'))}
+                />
             </>
         ) : (
             <>

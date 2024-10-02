@@ -7,10 +7,12 @@ import SendMessage from '../../components/SendMessage';
 import FollowBtn from '../../components/FollowBtn';
 import Post from '../../components/post/Post';
 import CreatePost from '../home/CreatePost';
+import { useSocket } from '../../context/SocketProvider';
 
 export default function Profile() {
     const { user, serverUrl } = useAppContext();
     const location = useLocation();
+    const socket = useSocket();
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get('id');
 
@@ -175,6 +177,7 @@ export default function Profile() {
                                         hasLiked={post.has_liked}
                                         prevComments={post.prev_comments}
                                         commentsCount={post.comments_count}
+                                        socket={socket}
                                     />
                                 )
                             })}

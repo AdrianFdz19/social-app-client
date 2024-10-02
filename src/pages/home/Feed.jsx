@@ -4,7 +4,7 @@ import Post from '../../components/post/Post';
 import CreatePost from './CreatePost';
 import { useAppContext } from '../../context/AppProvider';
 
-export default function Feed() {
+export default function Feed({socket}) {
 
   const {serverUrl, user} = useAppContext();
 
@@ -69,13 +69,14 @@ export default function Feed() {
                   content={post.content}
                   createdAt={post.created_at}
                   updatedAt={post.updated_at}
-                  likes={post.likes_count}
+                  likes={Number(post.likes_count)}
                   isFollowing={post.is_following}
                   serverUrl={serverUrl}
                   setLastFollowActionContext={setLastFollowActionContext}
                   hasLiked={post.has_liked}
                   prevComments={post.prev_comments}
-                  commentsCount={post.comments_count}
+                  commentsCount={Number(post.comments_count)}
+                  socket={socket}
                 />
               ))
             }

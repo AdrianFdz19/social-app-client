@@ -6,14 +6,17 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import AppProvider from './context/AppProvider.jsx'
 import ChatProvider from './context/ChatProvider.jsx'
 import SocketProvider from './context/SocketProvider.jsx'
+import NotificationsProvider from './context/NotificationsProvider.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <AppProvider>
       <SocketProvider>
-        <ChatProvider>
-          <App />
-        </ChatProvider>
+        <NotificationsProvider>
+          <ChatProvider>
+            <App />
+          </ChatProvider>
+        </NotificationsProvider>
       </SocketProvider>
     </AppProvider>
   </Router>

@@ -35,7 +35,7 @@ export default function CreatePost({setPosts}) {
                     ...data,
                     comments_count: 0,
                 }
-                console.log(newPostData);
+                console.log(newPostData, typeof newPostData.likes);
                 setPosts(prev => ([newPostData, ...prev]));
                 changeOpenModal();
             } else {

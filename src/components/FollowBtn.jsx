@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import './styles/followbtn.scss';
 import icons from '../assets/icons';
 import { BiSolidObjectsHorizontalLeft } from 'react-icons/bi';
+import { followNotification } from '../utils/events';
 
-export default function FollowBtn({isFollowing, serverUrl, userId, targetId, setLastFollowActionContext}) {
+export default function FollowBtn({isFollowing, serverUrl, userId, targetId, setLastFollowActionContext, socket}) {
 
   const [isHover, setHover] = useState(false);
   const [followStatus, setFollowStatus] = useState(null);
@@ -24,6 +25,10 @@ export default function FollowBtn({isFollowing, serverUrl, userId, targetId, set
           followStatus: brief.follow
         });
         setFollowStatus(prev => !prev);
+        // Emitir el evento para notificar del follow al target
+        if(brief.follow) {
+          followNotification(socket, userId, targetId);
+        }
       } else {
         console.error('Server internal error');
       }

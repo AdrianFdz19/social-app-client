@@ -18,10 +18,6 @@ export default function Post({userId, username, id, authorId, authorName, author
 
     const [likesCount, setLikesCount] = useState(likes || 0);
 
-    useEffect(() => {
-        console.log(typeof likes);
-    }, [likes]);
-
   return (
     <div className="post-cont" key={id} >
         <div className="post-box">

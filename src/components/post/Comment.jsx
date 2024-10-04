@@ -1,53 +1,37 @@
-import React, { useEffect, useState } from 'react'
-import './styles/comment.scss';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import ProfilePic from '../ProfilePic';
+import './styles/comment.scss';
 import CommentInput from './CommentInput';
-import { formatTimestamp } from '../../utils/client';
 
-export default function Comment({ postId, id, authorId, authorName, authorPic, content, updatedAt, userId, userPic, serverUrl, level }) {
+export default function Comment({
+    // Props del comentario
+    id,
+    postId,
+    authorId,
+    authorName,
+    authorPic,
+    content,
+    replyTo,
+    level,
+    updatedAt,
+    // Props de la aplicación y del usuario local
+    serverUrl,
+    userPic,
+    userId
+}) {
+    const [replies, setReplies] = useState([]);
+    const [repliesCount, setRepliesCount] = useState(0);
+    const [showReplies, setShowReplies] = useState(false);
 
-    const [reply, setReply] = useState(false);
-    const [comment, setComment] = useState({
-        postId,
-        authorId: userId || null,
-        commentId: id || null,
-        content: '',
-    });
-    const [comments, setComments] = useState([]);
-    const [replyCount, setReplyCount] = useState(0); // Iniciar con 0 en lugar de null
-
-    const handleReplyClick = () => setReply(prev => !prev);
-
-    const handleSubmitReply = async (e) => {
-        e.preventDefault();
-        try {
-            console.log(comment);
-
-            const response = await fetch(`${serverUrl}/posts/add-comment`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(comment)
-            });
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data);
-            } else {
-                console.error('Server internal error');
-            }
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    // Obtener el número de respuestas del comentario
+    // Fetch de la cantidad de respuestas
     useEffect(() => {
-        const fetchReplyCommentsCount = async () => {
+        const fetchRepliesCount = async () => {
             try {
                 const response = await fetch(`${serverUrl}/posts/comments/${id}/replies/count`);
                 if (response.ok) {
                     const data = await response.json();
-                    const count = parseInt(data.count, 10); // Asegurar que sea un número
-                    setReplyCount(count);
+                    setRepliesCount(Number(data.count));
                 } else {
                     console.error('Server internal error');
                 }
@@ -55,105 +39,115 @@ export default function Comment({ postId, id, authorId, authorName, authorPic, c
                 console.error(err);
             }
         };
-        fetchReplyCommentsCount();
+        fetchRepliesCount();
     }, [id, serverUrl]);
 
-    // Obtener los comentarios
-    const handleSeeMoreReplies = async () => {
+    // Fetch de la lista de respuestas
+    async function fetchReplies() {
         try {
             const response = await fetch(`${serverUrl}/posts/comments/${id}/replies`);
             if (response.ok) {
                 const data = await response.json();
-                if (Array.isArray(data)) { // Asegurarse de que data es un array
-                    setComments(data);
-                }
+                setReplies(data);
+                setShowReplies(true);
             } else {
                 console.error('Server internal error');
             }
         } catch (err) {
             console.error(err);
         }
-    };
+    }
+
+    const [reply, setReply] = useState(false);
+    const toggleReplyInput = () => setReply(prev => !prev);
+
+    // Características del comentario
+    const [branchVisible, setBranchVisible] = useState(null);
+    const [isReply, setIsReply] = useState(null);
+
+    useEffect(() => {
+        if (replyTo) setIsReply(replyTo !== 0);
+    }, [replyTo]);
+
+    useEffect(() => {
+        if (repliesCount >= 1 || reply) {
+            setBranchVisible(true);
+        }
+    }, [repliesCount, reply]);
 
     return (
-        <div className={`comment ${reply ? 'reply' : ''}`}>
-            <div className={`box ${(reply && !replyCount) ? 'reply' : ''}`}>
-                <div className="thread-pic">
+        <div className="comment">
+            <div className="comment__content-wrapper">
+                <div className="comment__avatar">
                     <ProfilePic
-                        size={2.35}
+                        size={isReply ? 2 : 2.5}
                         url={authorPic}
                     />
-                    {(replyCount > 0 || reply) && ( // Mejor comparación condicional
-                        <div className="th-box">
-                            <div className="th"></div>
-                        </div>
-                    )}
                 </div>
-                <div className="brief">
-                    <div className="content">
-                        <p id='name'>{authorName}</p>
-                        <p id='content'>{content}</p>
+                <div className="comment__text-section">
+                    <div className="comment__text">
+                        <p className="comment__author">{authorName}</p>
+                        <p className="comment__content">{content}</p>
                     </div>
-                    <div className="more">
-                        <p id='date'>{updatedAt}</p>
-                        <p className='action'>Like</p>
-                        <p className='action' onClick={handleReplyClick}>Reply</p>
-                        <p className='action'>Share</p>
+                    <div className="comment__actions">
+                        <p className="comment__action">Like</p>
+                        <p className="comment__action comment__reply" onClick={toggleReplyInput}>Reply</p>
                     </div>
                 </div>
             </div>
-            {replyCount > 0 && (
-                <>
-                    {comments.length > 0 ? (
-                        <>
-                            {comments.map((comment) => (
-                                <Comment
-                                    key={comment.id}
-                                    id={comment.id}
-                                    postId={postId}
-                                    authorId={comment.author_id}
-                                    authorName={comment.author_name}
-                                    authorPic={comment.author_pic}
-                                    content={comment.content}
-                                    level={comment.level}
-                                    updatedAt={formatTimestamp(comment.updated_at)}
-                                    userId={userId}
-                                    userPic={userPic}
-                                    serverUrl={serverUrl}
-                                />
-                            ))}
-                        </>
-                    ) : (
-                        <div className="see-more-box">
-                            <div className="th-cont">
-                                <div className="th-bx">
-                                    <div className="th-cn"></div>
-                                    {reply && <div className="th-sub"></div>}
-                                </div>
-                            </div>
-                            <p onClick={handleSeeMoreReplies}>
-                                See {replyCount === 1 ? 'the reply' : `the ${replyCount} replies`}
-                            </p>
-                        </div>
-                    )}
-                </>
-            )}
-            {reply && (
-                <div className={`comment-cont-reply`}>
-                    <div className="th-cont">
-                        <div className="th-bx">
-                            <div className="th-cn"></div>
-                        </div>
-                    </div>
-                    <CommentInput
-                        userPic={userPic}
-                        picSize={1.8}
-                        comment={comment}
-                        setComment={setComment}
-                        handleCommentSubmit={handleSubmitReply}
-                    />
+
+            {/* Mostrar "ver respuestas" solo si hay respuestas y no se han mostrado */}
+            {repliesCount > 0 && !showReplies && (
+                <div className="comment__view-replies" onClick={fetchReplies}>
+                    <p>View {repliesCount} replies</p>
                 </div>
             )}
+
+            {/* Mostrar respuestas si ya se han obtenido */}
+            {showReplies && replies.length > 0 && (
+                <div className="comment__replies">
+                    {replies.map(reply => (
+                        <Comment
+                            key={reply.id}
+                            id={reply.id}
+                            postId={postId}
+                            authorId={reply.author_id}
+                            authorName={reply.author_name}
+                            authorPic={reply.author_pic}
+                            content={reply.content}
+                            replyTo={reply.reply_to_comment_id}
+                            level={reply.level}
+                            updatedAt={reply.update_at}
+                            serverUrl={serverUrl}
+                            userPic={userPic}
+                            userId={userId}
+                        />
+                    ))}
+                </div>
+            )}
+
+            {/* Mostrar input para respuesta */}
+            {reply && (
+                <CommentInput
+                    postId={postId}
+                    userId={userId}
+                    replyTo={id}
+                    userPic={userPic}
+                    serverUrl={serverUrl}
+                    typeCont="primary"
+                    setComments={setReplies}
+                />
+            )}
         </div>
-    )
+    );
 }
+
+Comment.propTypes = {
+    id: PropTypes.number.isRequired,
+    postId: PropTypes.number.isRequired,
+    authorId: PropTypes.number.isRequired,
+    authorName: PropTypes.string.isRequired,
+    authorPic: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    level: PropTypes.number.isRequired,
+};

@@ -1,184 +1,77 @@
 @import '../../../styles.scss';
 
 .comment {
-    padding-bottom: .5rem;
-    width: 100%;
-    /* border: 1px solid rgb(236, 236, 236); */
+    max-width: 100%;
+    /* border: 1px solid gainsboro; */
     @include column;
-    &.reply {
-        padding-bottom: .5rem;
+
+    &__content-wrapper {
+        display: flex;
+        align-items: flex-start;
     }
-    .box {
-        @include between;
-        align-items: stretch;
-        width: 100%;
-        p { margin: 0; }
-        &.reply {
-            .thread-pic {
-                .th-box {
-                    height: 3rem;
-                }
-            }
-        }
-        .thread-pic {
-            height: auto;
-            width: 2.8rem;
-            @include column;
-            align-items: stretch;
-            /* border: 1px solid rgb(169, 169, 169); */
-            .profile-pic-cont {
-            }
-            .th-box {
-                /* border: 1px solid rgb(169, 169, 169); */
-                height: 100%;
-                position: relative;
-                width: 2.35rem;
-                @include cont;
-                align-items: flex-end;
-                .th {
-                    border: 1.4px solid $th-color;
-                    height: 85%;
-                    left: 1rem;
-                    position: absolute;
-                }
-            }
-        }
-        .brief {
-            flex-grow: 1;
-            @include column;
-            align-items: flex-start;
-            /* border: 1px solid rgb(12, 20, 138); */
-            .content {
-                width: auto;
-                border-radius: 10px;
-                padding: .4rem .65rem;
-                background-color: #f7f7f7;
-                #name { font-weight: 500; font-size: .95rem; }
-                #content { font-size: .95rem; margin-top: .25rem; }
-            }
-            .more {
-                width: 100%; margin-top: .4rem;
-                display: flex;
-                #date { font-size: .8rem; font-weight: 300; cursor: pointer; &:hover { text-decoration: underline; } }
-                .action {
-                    margin-left: 1.25rem; cursor: pointer;
-                    font-weight: 500;
-                    font-size: .85rem;
-                    &:hover { text-decoration: underline; }
-                }
-            }
-        }
+
+    &__avatar {
+        min-width: 2.75rem;
+        display: flex;
+        align-items: center;
     }
-    .see-more-box {
-        display: flex; align-items: stretch;
-        height: 2.3rem;
-        /* border: 1px solid red; */
-        .th-cont {
-            /* border: 1px solid blue; */
-            width: 2.8rem;
-            .th-bx {
-                width: 2.35rem;
-                /* border: 1px solid gainsboro; */
-                height: 100%;
-                @include cont;
-                position: relative;
-                align-items: flex-start;
-                .th-cn {
-                    border-left: 3px solid $th-color;
-                    border-bottom: 3px solid $th-color;
-                    border-bottom-left-radius: 10px;
-                    height: 50%;
-                    width: 1.3rem;
-                    left: 1rem;
-                    position: absolute;
-                }
-                .th-sub {
-                    border: 1.4px solid $th-color;
-                    position: absolute;
-                    left: 1rem;
-                    height: 100%;
-                }
-            }
-        }
+
+    &__text-section {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__text {
+        background-color: rgb(248, 248, 248);
+        border-radius: 15px;
+        padding: 0.5rem 0.75rem;
         p {
             margin: 0;
-            font-weight: 500;
-            color: #636363;
-            @include cont; cursor: pointer;
-            /* border-left: 1px solid gainsboro; */
         }
     }
-    .comment-cont-reply {
-        display: flex; align-items: stretch;
-        height: 2.3rem;
-        /* border: 1px solid red; */
-        .th-cont {
-            /* border: 1px solid blue; */
-            width: 2.8rem;
-            .th-bx {
-                width: 2.35rem;
-                /* border: 1px solid gainsboro; */
-                height: 100%;
-                @include cont;
-                position: relative;
-                align-items: flex-start;
-                .th-cn {
-                    border-left: 3px solid $th-color;
-                    border-bottom: 3px solid $th-color;
-                    border-bottom-left-radius: 10px;
-                    height: 50%;
-                    width: 1.3rem;
-                    left: 1rem;
-                    position: absolute;
-                }
+
+    &__author {
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+
+    &__content {
+        margin-top: 0.2rem;
+    }
+
+    &__actions {
+        display: flex;
+        padding-left: 0.75rem;
+
+        .comment__action {
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin: 0.3rem 1rem 0 0;
+            cursor: pointer;
+
+            &.comment__reply {
+                font-weight: 450;
             }
         }
-        .comment-input {
-            width: 100%;
-            height: 100%;
-            /* border: 1px solid gainsboro; */
-            @include between; align-items: center;
-            margin-top: 0;
-            margin-left: .3rem;
-            .input-cmt {
-                border-radius: 10px;
-                height: 100%;
-                flex-grow: .95;
-                @include cont;
-                position: relative; box-sizing: border-box;
-                textarea {
-                    border: none; border: 1px solid gainsboro;
-                    border-radius: 10px;
-                    width: 100%; padding: .5rem; padding-right: 2rem;
-                    height: 100%; box-sizing: border-box;
-                    &:focus { outline: none; }
-                }
-                .submit {
-                    @include cont;
-                    width: 1.5rem; height: 1.5rem;
-                    position: relative;
-                    position: absolute;
-                    bottom: .25rem;
-                    right: .25rem;
-                    input {
-                        position: absolute;
-                        border-radius: 100%;
-                        width: 100%;
-                        height: 100%;
-                        background-color: transparent; 
-                        border: none;
-                    }
-                    .sendarrow {
-                        border-radius: 100%;
-                        color: gainsboro;
-                        width: 1.5rem; height: auto;
-                        &.active {
-                            color: $secondary-color;
-                            cursor: pointer;
-                        }
-                    }
-                }
-            }
+    }
+
+    &__view-replies {
+        display: flex;
+        align-items: center;
+        height: 2.25rem;
+        p {
+            margin: 0;
+            flex-grow: 1;
+            font-weight: 450;
+            color: #616161;
+            font-size: 0.95rem;
+            cursor: pointer;
         }
+    }
+
+    &__replies {
+
     }
 }

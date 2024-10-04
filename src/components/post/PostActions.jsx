@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import icons from '../../assets/icons';
-import CommentBox from './CommentBox';
+import CommentInput from './CommentInput';
+import Comment from './Comment';
 
 export default function PostActions({hasLiked, serverUrl, postId, userId, username, userPic, setLikesCount, prevComments, commentsCount}) {
 
-    const [commentBox, setCommentBox] = useState(false);
+    const [postComment, setPostComment] = useState(false);
     const [isLike, setIsLike] = useState(null);
+    const [comments, setComments] = useState(prevComments); // Contexto de los comentarios (lista de comentarios previos)
 
     // COMMENTS
-    const handleCommentClick = () => setCommentBox(prev => !prev);
+    const handleCommentClick = () => setPostComment(prev => !prev);
 
     // LIKES
     useEffect(() => {
@@ -76,16 +78,37 @@ export default function PostActions({hasLiked, serverUrl, postId, userId, userna
             </div>
         </div>
         {
-            (prevComments && prevComments.length > 0 || commentBox) &&
-            <CommentBox
-                close={handleCommentClick}
-                serverUrl={serverUrl}
+            comments && comments.length > 0 &&
+            <div className="post-prev-comments">
+                {comments.map((com, i) => (
+                    <Comment
+                        key={com.id}
+                        id={com.id}
+                        postId={com.post_id}
+                        authorId={com.author_id}
+                        authorName={com.author_name}
+                        authorPic={com.author_pic}
+                        content={com.content}
+                        replyTo={com.reply_to_comment_id}
+                        level={com.level}
+                        updatedAt={com.update_at}
+                        serverUrl={serverUrl}
+                        userPic={userPic}
+                        userId={userId}
+                    />
+                ))}
+            </div>
+        }
+        {
+            postComment &&
+            <CommentInput
                 postId={postId}
                 userId={userId}
-                username={username}
+                replyTo={0}
                 userPic={userPic}
-                prevComments={prevComments}
-                commentsCount={commentsCount}
+                serverUrl={serverUrl}
+                typeCont='--primary'
+                setComments={setComments}
             />
         }
     </div>

@@ -91,6 +91,7 @@ export default function PostActions({hasLiked, serverUrl, postId, userId, userna
                         content={com.content}
                         replyTo={com.reply_to_comment_id}
                         level={com.level}
+                        isLast={false}
                         updatedAt={com.update_at}
                         serverUrl={serverUrl}
                         userPic={userPic}
@@ -106,6 +107,8 @@ export default function PostActions({hasLiked, serverUrl, postId, userId, userna
                 userId={userId}
                 replyTo={0}
                 userPic={userPic}
+                sizePic={2.5}
+                parentIsLast={true}
                 serverUrl={serverUrl}
                 typeCont='--primary'
                 setComments={setComments}

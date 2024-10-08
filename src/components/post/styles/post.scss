@@ -104,16 +104,6 @@
                 width: 100%;
                 @include column;
                 margin-top: .75rem;
-            
-                // Si solo hay dos elementos, aplicar el margen inferior solo al primer elemento
-                > *:nth-child(1):nth-last-child(2) {
-                    margin-bottom: .75rem;
-                }
-            
-                // Seleccionar todos los hijos excepto el primero y el último
-                > *:not(:first-child):not(:last-child) {
-                    margin: .75rem 0rem;
-                }
             }            
             
         }

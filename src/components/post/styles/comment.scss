@@ -1,19 +1,91 @@
 @import '../../../styles.scss';
+@import '../branchstyles.scss';
+
+/* 
+    Medidas
+    Avatar = 2.75rem de Width
+    View replies = 2.5rem de Height
+*/
 
 .comment {
     max-width: 100%;
-    /* border: 1px solid gainsboro; */
     @include column;
-
     &__content-wrapper {
         display: flex;
-        align-items: flex-start;
+        align-items: stretch;
+        .branch {
+            border: 1px solid gainsboro;
+            display: none;
+            @include branchSecondWidth;
+            position: relative;
+            &__parent {
+                border-left: 2px solid $branch-color;
+                height: 100%;
+                width: 1.35rem;
+                position: absolute;
+                top: 0;
+                right: .25rem;
+                &.sec {
+                    width: 1.35rem;
+                }
+                &.thi {
+                    width: 1.15rem;
+                    right: .25rem;
+                }
+            }
+            &__to {
+                border-left: 2px solid $branch-color;
+                border-bottom: 2px solid $branch-color;
+                width: 1.35rem;
+                height: 1rem;
+                border-bottom-left-radius: 10px;
+                position: absolute;
+                top: 0;
+                right: .25rem;
+                &.sec {
+                    width: 1.35rem;
+                    height: .9rem;
+                }
+                &.thi {
+                    width: 1.15rem;
+                    right: .25rem;
+                    height: .9rem;
+                }
+            }
+            &.sec {
+                @include branchSecondWidth;
+                display: block;
+            }
+            &.thi {
+                @include branchThirdWidth;
+                display: block;
+            }
+        }
     }
 
     &__avatar {
-        min-width: 2.75rem;
-        display: flex;
-        align-items: center;
+        min-width: 2.9rem;
+        @include column;
+        /* border: 1px solid gainsboro; */
+        position: relative;
+        .branch-main {
+            border-left: 2px solid $branch-color;
+            height: 48%;
+            width: 1.6rem;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            &.sec {
+                width: 1.4rem;
+                height: 55%;
+            }
+            &.thi {
+                width: 1.4rem;
+            }
+        }
+        &.sec {
+            min-width: 2.4rem;
+        }
     }
 
     &__text-section {
@@ -21,6 +93,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        /* border: 1px solid red; */
     }
 
     &__text {
@@ -44,7 +117,7 @@
     &__actions {
         display: flex;
         padding-left: 0.75rem;
-
+        padding-bottom: .5rem;
         .comment__action {
             font-weight: 500;
             font-size: 0.85rem;
@@ -59,19 +132,72 @@
 
     &__view-replies {
         display: flex;
-        align-items: center;
+        align-items: stretch;
         height: 2.25rem;
-        p {
-            margin: 0;
+        .branch {
+            /* border: 1px solid gainsboro; */
+            @include branchSecondWidth;
+            position: relative;
+            
+            &__to {
+                border-left: 2px solid $branch-color;
+                border-bottom: 2px solid $branch-color;
+                width: 1.35rem;
+                height: 1rem;
+                border-bottom-left-radius: 10px;
+                position: absolute;
+                top: 0;
+                right: .25rem;
+                &.sec {
+                    width: 1.15rem;
+                    right: .25rem;
+                }
+                &.thi {
+                    width: 1.15rem;
+                    right: .25rem;
+                }
+            }
+            &.sec {
+                @include branchThirdWidth;
+            }
+            &.thi {
+                @include branchThirdWidth;
+            }
+        }
+        .view-rep-txt {
+            @include cont;
+            display: flex;
             flex-grow: 1;
-            font-weight: 450;
-            color: #616161;
-            font-size: 0.95rem;
-            cursor: pointer;
+            p {
+                flex-grow: 1;
+                font-weight: 450;
+                color: #616161;
+                font-size: 0.9rem;
+                cursor: pointer;
+                margin: 0;
+            }
         }
     }
 
     &__replies {
-
+        /* border: 1px solid red; */
     }
+
+    &__replyinp {
+        display: flex;
+        .branch {
+            border: 1px solid gainsboro;
+            @include branchSecondWidth;
+            &.sec {
+                @include branchThirdWidth;
+            }
+            &.thi {
+                @include branchThirdWidth;
+            }
+        }
+    }
+}
+
+.post-comment {
+    padding-bottom: .5rem;
 }

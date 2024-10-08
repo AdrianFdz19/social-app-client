@@ -1,0 +1,10 @@
+@import '../../styles.scss';
+
+$branch-color: #c1c1c1;
+
+@mixin branchSecondWidth {
+    min-width: 2.9rem;
+}
+@mixin branchThirdWidth {
+    min-width: 5.3rem;
+}

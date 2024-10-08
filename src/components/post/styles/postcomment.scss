@@ -13,12 +13,18 @@
 .post-comment {
     width: 100%;
     display: flex;
+    &__avatar {
+        /* border: 1px solid green; */
+        min-width: 2.9rem; 
+        &.sec {
+            min-width: 2.4rem;
+        }
+    }
     .textarea-cont {
         height: auto;
         flex-grow: 1;
         display: flex;
         box-sizing: border-box;
-        margin-left: .75rem;
         position: relative;
         .sendarrow {
             position: absolute;

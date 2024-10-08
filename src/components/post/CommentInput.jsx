@@ -8,6 +8,7 @@ export default function CommentInput({
     postId,
     userId,
     userPic,
+    sizePic,
     replyTo,
     typeCont,
     serverUrl,
@@ -47,10 +48,12 @@ export default function CommentInput({
   return (
     <div className={`post-comment-cont ${typeCont}`}>
         <div className="post-comment">
-            <ProfilePic
-                size={2.5}
-                url={userPic}
-            />
+            <div className={`post-comment__avatar ${replyTo == 0 ? '' : 'sec'}`}>
+                <ProfilePic
+                    size={sizePic}
+                    url={userPic}
+                />
+            </div>
 
             <div className="textarea-cont">
                 <icons.sendArrow
@@ -72,6 +75,7 @@ CommentInput.propTypes = {
     postId: PropTypes.number.isRequired,
     userId: PropTypes.number.isRequired,
     userPic: PropTypes.string.isRequired,
+    sizePic: PropTypes.number.isRequired,
     replyTo: PropTypes.number.isRequired,
     typeCont: PropTypes.string.isRequired,
     serverUrl: PropTypes.string.isRequired,

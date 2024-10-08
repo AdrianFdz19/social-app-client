@@ -12,9 +12,11 @@ export default function Comment({
     authorName,
     authorPic,
     content,
-    replyTo,
-    level,
+    replyTo, // Id del comentario al que se esta respondiendo
+    level, // Nivel de comentario o su rama
     updatedAt,
+    isLast = true,
+    parentIsLast,
     // Props de la aplicación y del usuario local
     serverUrl,
     userPic,
@@ -23,6 +25,7 @@ export default function Comment({
     const [replies, setReplies] = useState([]);
     const [repliesCount, setRepliesCount] = useState(0);
     const [showReplies, setShowReplies] = useState(false);
+    const [branch, setBranch] = useState(false);
 
     // Fetch de la cantidad de respuestas
     useEffect(() => {
@@ -48,7 +51,12 @@ export default function Comment({
             const response = await fetch(`${serverUrl}/posts/comments/${id}/replies`);
             if (response.ok) {
                 const data = await response.json();
-                setReplies(data);
+                const lastId = data.length - 1;
+                let list = data.map((reply, i) => (
+                    i == lastId ? {...reply, isLast: true} : {...reply, isLast: false}
+                ));
+                console.log(list);
+                setReplies(list);
                 setShowReplies(true);
             } else {
                 console.error('Server internal error');
@@ -62,7 +70,6 @@ export default function Comment({
     const toggleReplyInput = () => setReply(prev => !prev);
 
     // Características del comentario
-    const [branchVisible, setBranchVisible] = useState(null);
     const [isReply, setIsReply] = useState(null);
 
     useEffect(() => {
@@ -70,19 +77,53 @@ export default function Comment({
     }, [replyTo]);
 
     useEffect(() => {
-        if (repliesCount >= 1 || reply) {
-            setBranchVisible(true);
+        if( repliesCount > 0 || reply ) {
+            setBranch(true);
         }
     }, [repliesCount, reply]);
+
+    let levelStyle;
+    switch(level) {
+        case 1:
+            levelStyle = ''
+            break;
+        case 2:
+            levelStyle = 'sec'
+            break;
+        case 3:
+            levelStyle = 'thi'
+            break;
+        default:
+            levelStyle = 'thi'
+            break;
+    }
+
+    useEffect(() => {
+        console.log(levelStyle);
+    }, [levelStyle]);
+
+    useEffect(() => {
+        console.log(`El papa de este hijo es el elemento final ?: ${parentIsLast}`)
+    }, [parentIsLast]);
 
     return (
         <div className="comment">
             <div className="comment__content-wrapper">
-                <div className="comment__avatar">
+                <div className={`branch ${levelStyle}`}>
+                    <div className={`branch__to ${levelStyle}`}></div>
+                    { !isLast || parentIsLast &&
+                    <div className={`branch__parent ${levelStyle}`}></div>
+                    }
+                </div>
+                <div className={`comment__avatar ${level > 1 ? 'sec' : ''}`}>
                     <ProfilePic
-                        size={isReply ? 2 : 2.5}
+                        size={isReply ? 2 : 2.4}
                         url={authorPic}
                     />
+                    { branch &&
+                    <div className={`branch-main ${levelStyle}`}>
+                    </div>
+                    }
                 </div>
                 <div className="comment__text-section">
                     <div className="comment__text">
@@ -99,7 +140,13 @@ export default function Comment({
             {/* Mostrar "ver respuestas" solo si hay respuestas y no se han mostrado */}
             {repliesCount > 0 && !showReplies && (
                 <div className="comment__view-replies" onClick={fetchReplies}>
-                    <p>View {repliesCount} replies</p>
+                    <div className={`branch ${levelStyle}`}>
+                        <div className={`branch__to ${levelStyle}`}></div>
+                        
+                    </div>
+                    <div className="view-rep-txt">
+                        <p>View {repliesCount} replies</p>  
+                    </div>
                 </div>
             )}
 
@@ -117,6 +164,8 @@ export default function Comment({
                             content={reply.content}
                             replyTo={reply.reply_to_comment_id}
                             level={reply.level}
+                            isLast={reply.isLast}
+                            parentIsLast={isLast}
                             updatedAt={reply.update_at}
                             serverUrl={serverUrl}
                             userPic={userPic}
@@ -128,15 +177,20 @@ export default function Comment({
 
             {/* Mostrar input para respuesta */}
             {reply && (
-                <CommentInput
-                    postId={postId}
-                    userId={userId}
-                    replyTo={id}
-                    userPic={userPic}
-                    serverUrl={serverUrl}
-                    typeCont="primary"
-                    setComments={setReplies}
-                />
+                <div className="comment__replyinp">
+                    <div className={`branch ${levelStyle}`}>
+                    </div>
+                    <CommentInput
+                        postId={postId}
+                        userId={userId}
+                        replyTo={id}
+                        userPic={userPic}
+                        sizePic={2}
+                        serverUrl={serverUrl}
+                        typeCont="primary"
+                        setComments={setReplies}
+                    />
+                </div>
             )}
         </div>
     );

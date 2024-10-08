@@ -10,14 +10,21 @@
 .comment {
     max-width: 100%;
     @include column;
+    position: relative;
+    button {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
     &__content-wrapper {
         display: flex;
         align-items: stretch;
         .branch {
-            border: 1px solid gainsboro;
+            /* border: 1px solid gainsboro; */
             display: none;
             @include branchSecondWidth;
             position: relative;
+            
             &__parent {
                 border-left: 2px solid $branch-color;
                 height: 100%;

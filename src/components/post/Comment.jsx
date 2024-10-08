@@ -16,7 +16,6 @@ export default function Comment({
     level, // Nivel de comentario o su rama
     updatedAt,
     isLast = true,
-    parentIsLast,
     // Props de la aplicación y del usuario local
     serverUrl,
     userPic,
@@ -26,7 +25,6 @@ export default function Comment({
     const [repliesCount, setRepliesCount] = useState(0);
     const [showReplies, setShowReplies] = useState(false);
     const [branch, setBranch] = useState(false);
-
     // Fetch de la cantidad de respuestas
     useEffect(() => {
         const fetchRepliesCount = async () => {
@@ -52,10 +50,12 @@ export default function Comment({
             if (response.ok) {
                 const data = await response.json();
                 const lastId = data.length - 1;
-                let list = data.map((reply, i) => (
-                    i == lastId ? {...reply, isLast: true} : {...reply, isLast: false}
-                ));
-                console.log(list);
+    
+                let list = data.map((reply, i) => ({
+                    ...reply,
+                    isLast: i === lastId
+                }));
+    
                 setReplies(list);
                 setShowReplies(true);
             } else {
@@ -64,7 +64,7 @@ export default function Comment({
         } catch (err) {
             console.error(err);
         }
-    }
+    }    
 
     const [reply, setReply] = useState(false);
     const toggleReplyInput = () => setReply(prev => !prev);
@@ -98,20 +98,17 @@ export default function Comment({
             break;
     }
 
-    useEffect(() => {
-        console.log(levelStyle);
-    }, [levelStyle]);
-
-    useEffect(() => {
-        console.log(`El papa de este hijo es el elemento final ?: ${parentIsLast}`)
-    }, [parentIsLast]);
+    const handleDebug = () => {
+        console.log(isParentLast);
+    }
 
     return (
         <div className="comment">
+            <button onClick={handleDebug} >debug button</button>
             <div className="comment__content-wrapper">
                 <div className={`branch ${levelStyle}`}>
                     <div className={`branch__to ${levelStyle}`}></div>
-                    { !isLast || parentIsLast &&
+                    { !isLast &&
                     <div className={`branch__parent ${levelStyle}`}></div>
                     }
                 </div>
@@ -165,7 +162,6 @@ export default function Comment({
                             replyTo={reply.reply_to_comment_id}
                             level={reply.level}
                             isLast={reply.isLast}
-                            parentIsLast={isLast}
                             updatedAt={reply.update_at}
                             serverUrl={serverUrl}
                             userPic={userPic}

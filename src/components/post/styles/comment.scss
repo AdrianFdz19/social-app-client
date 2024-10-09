@@ -24,6 +24,15 @@
             display: none;
             @include branchSecondWidth;
             position: relative;
+
+            &__ancestor {
+                border-left: 2px solid $branch-color;
+                height: 100%;
+                width: 1.35rem;
+                position: absolute;
+                top: 0;
+                right: 2.65rem;
+            }
             
             &__parent {
                 border-left: 2px solid $branch-color;
@@ -88,6 +97,8 @@
             }
             &.thi {
                 width: 1.4rem;
+                right: 2.4rem;
+                height: 100%;
             }
         }
         &.sec {
@@ -145,6 +156,15 @@
             /* border: 1px solid gainsboro; */
             @include branchSecondWidth;
             position: relative;
+
+            &__ancestor {
+                border-left: 2px solid $branch-color;
+                height: 100%;
+                width: 1.35rem;
+                position: absolute;
+                top: 0;
+                right: 2.65rem;
+            }
             
             &__to {
                 border-left: 2px solid $branch-color;
@@ -192,9 +212,30 @@
 
     &__replyinp {
         display: flex;
+        align-items: stretch;
         .branch {
-            border: 1px solid gainsboro;
+            /* border: 1px solid gainsboro; */
             @include branchSecondWidth;
+            position: relative;
+            &__to {
+                border-left: 2px solid $branch-color;
+                border-bottom: 2px solid $branch-color;
+                width: 1.35rem;
+                height: 1rem;
+                border-bottom-left-radius: 10px;
+                position: absolute;
+                top: 0;
+                right: .25rem;
+                &.sec {
+                    width: 1.15rem;
+                    right: .25rem;
+                }
+                &.thi {
+                    width: 1.15rem;
+                    right: .25rem;
+                }
+            }
+
             &.sec {
                 @include branchThirdWidth;
             }

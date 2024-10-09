@@ -98,8 +98,12 @@ export default function Comment({
             break;
     }
 
+    useEffect(() => {
+        console.log(replies);
+    }, [replies]);
+
     const handleDebug = () => {
-        console.log(isParentLast);
+        console.log(`los comentarios replicas de este comentario con id: ${id} son: ${JSON.stringify(replies)}`);
     }
 
     return (
@@ -111,6 +115,7 @@ export default function Comment({
                     { !isLast &&
                     <div className={`branch__parent ${levelStyle}`}></div>
                     }
+                    { level >= 3 && <div className={`branch__ancestor`}></div> }
                 </div>
                 <div className={`comment__avatar ${level > 1 ? 'sec' : ''}`}>
                     <ProfilePic
@@ -139,7 +144,7 @@ export default function Comment({
                 <div className="comment__view-replies" onClick={fetchReplies}>
                     <div className={`branch ${levelStyle}`}>
                         <div className={`branch__to ${levelStyle}`}></div>
-                        
+                        { level >= 2 && <div className={`branch__ancestor`}></div>}
                     </div>
                     <div className="view-rep-txt">
                         <p>View {repliesCount} replies</p>  
@@ -175,6 +180,7 @@ export default function Comment({
             {reply && (
                 <div className="comment__replyinp">
                     <div className={`branch ${levelStyle}`}>
+                        <div className={`branch__to ${levelStyle}`}></div>
                     </div>
                     <CommentInput
                         postId={postId}

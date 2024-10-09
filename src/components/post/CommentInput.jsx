@@ -35,7 +35,7 @@ export default function CommentInput({
                 const data = await response.json();
                 const newComment = data.comment;
                 console.log(newComment);
-                setComments(prev => ([newComment, ...prev]));
+                setComments(prev => ([...prev, newComment]));
                 setCommentData(prev => ({...prev, content: ''}));
             } else {
                 console.error('Server internal error');
